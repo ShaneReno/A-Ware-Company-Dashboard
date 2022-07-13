@@ -1,4 +1,4 @@
-package io.shane.awarewebapplication;
+package models;
 
 import java.util.Arrays;
 import java.util.Collection;
