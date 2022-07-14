@@ -12,14 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class MyUserDetails implements UserDetails {
 	
-	private String userName;
-	private String password;
+
+	private static final long serialVersionUID = 1L;
+	private String user_name;
+	private String pass_word;
 	private boolean active;
 	private List<GrantedAuthority> authorities;
 	
 	public MyUserDetails(User user) {
-		this.userName = user.getUserName();
-		this.password = user.getPassword();
+		this.user_name = user.getUser_name();
+		this.pass_word = user.getPass_word();
 		this.active = user.isActive();
 		this.authorities = Arrays.stream(user.getRoles().split(", ")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 		
@@ -32,13 +34,13 @@ public class MyUserDetails implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return password;
+		return pass_word;
 	}
 
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return userName;
+		return user_name;
 	}
 
 	@Override
