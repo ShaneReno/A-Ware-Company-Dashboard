@@ -5,7 +5,7 @@ USE aware; #Created Schema
 
 DROP TABLE if EXISTS managers;
 
-CREATE TABLE managers (id int PRIMARY KEY, user_name varchar(20), pass_word varchar(20), active boolean, roles varchar(12));
+CREATE TABLE managers (id int PRIMARY KEY, username varchar(20), password varchar(20), active boolean, roles varchar(12));
 insert into managers values (5, 'user', 'pass', true, 'ROLE_USER');
 
 DROP TABLE if EXISTS employees;
