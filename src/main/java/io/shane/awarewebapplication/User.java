@@ -3,7 +3,7 @@ package io.shane.awarewebapplication;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "managers")
+@Table(name = "MANAGERS", schema="AWARE")
 public class User {
 	
 	@Id
