@@ -14,13 +14,11 @@ public class MyUserDetails implements UserDetails {
 	
 	private String username;
 	private String password;
-	private boolean active;
 	private List<GrantedAuthority> authorities;
 	
 	public MyUserDetails(User user) {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
-		this.active = user.isActive();
 		this.authorities = Arrays.stream(user.getRoles().split(", ")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 		
 	}

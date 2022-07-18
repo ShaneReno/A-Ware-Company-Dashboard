@@ -3,10 +3,10 @@ CREATE DATABASE IF NOT EXISTS aware;
 USE aware; #Created Schema
 
 
-DROP TABLE if EXISTS managers;
+DROP TABLE if EXISTS user;
 
-CREATE TABLE managers (id int PRIMARY KEY, username varchar(20), password varchar(20), active boolean, roles varchar(12));
-insert into managers values (5, 'user', 'pass', true, 'ROLE_USER');
+CREATE TABLE user (id int PRIMARY KEY, username varchar(20), password varchar(20), role varchar(12));
+insert into user values (1, 'sreynolds', 'pass', 'ADMIN');
 
 DROP TABLE if EXISTS employees;
 

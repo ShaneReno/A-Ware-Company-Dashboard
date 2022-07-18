@@ -3,7 +3,7 @@ package io.shane.awarewebapplication;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MANAGERS", schema="AWARE")
+@Table(name = "user", schema="aware")
 public class User {
 	
 	@Id
@@ -11,8 +11,8 @@ public class User {
 	private int id;
 	private String username;
 	private String password;
-	private boolean active;
-	private String roles;
+	private String role;
+	
 	public int getId() {
 		return id;
 	}
@@ -31,17 +31,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 	public String getRoles() {
-		return roles;
+		return role;
 	}
 	public void setRoles(String roles) {
-		this.roles = roles;
+		this.role = roles;
 	}
 	
 	
