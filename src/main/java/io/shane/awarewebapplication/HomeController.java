@@ -11,12 +11,12 @@ public class HomeController {
 		return("<h1>Home Page</h1>");
 	}
 	
-	/*
+	
 	@GetMapping("/user")
 	public String user() {
 		return("<h1>Welcome User</h1>");
 	}
-	*/
+	
 	
 	@GetMapping("/admin")
 	public String admin() {

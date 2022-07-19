@@ -1,16 +1,22 @@
 package io.shane.awarewebapplication;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user", schema="aware")
-public class User {
-	
+@Table(name = "users", schema="aware")
+public class User implements Serializable{
+	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
+	@Column(name="user_name")
 	private String username;
+	@Column(name="passphrase")
 	private String password;
+	@Column(name="roles")
 	private String role;
 	
 	public int getId() {
@@ -36,6 +42,9 @@ public class User {
 	}
 	public void setRoles(String roles) {
 		this.role = roles;
+	}
+	public boolean isActive() {
+		return false;
 	}
 	
 	
