@@ -1,12 +1,12 @@
-package io.shane.awarewebapplication;
+package io.shane.awareproject;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HomeController {
+public class HomeResource {
 	
-	@GetMapping("/home")
+	@GetMapping("/")
 	public String home() {
 		return("<h1>Home Page</h1>");
 	}
