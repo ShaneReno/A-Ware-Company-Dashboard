@@ -1,13 +1,24 @@
 package io.shane.awareproject;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @Controller
 public class HomeResource {
+	
+	@RequestMapping("/default")
+    public String defaultAfterLogin(HttpServletRequest request) {
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            return "redirect:/admin-dashboard/";
+        }
+        return "redirect:/employee-dashboard/";
+    }
 	
 	
 	@GetMapping
@@ -15,7 +26,8 @@ public class HomeResource {
 		return "index";
 	}
 	
-	
+
+	//Mapping for the employee user account
 	@GetMapping("/employee-dashboard")
 	public String user() {
 		return "employeeDashboard";
@@ -28,10 +40,15 @@ public class HomeResource {
 	
 	
 	
-	
-	@GetMapping("/admin")
+	//Mapping for the manager user account
+	@GetMapping("/admin-dashboard")
 	public String admin() {
-		return("<h1>Welcome Admin</h1>");
+		return "adminDashboard";
+	}
+	
+	@GetMapping("/create-roster")
+	public String createRoster() {
+		return "createRoster";
 	}
 
 }
