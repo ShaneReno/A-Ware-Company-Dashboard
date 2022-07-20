@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -30,7 +31,24 @@ public class HomeResource {
 	}
 	
 
+	
 	//Mapping for the employee user account
+	
+	
+	@Autowired
+	FetchDataService fetchDataService;
+	
+	
+	
+	@GetMapping("getdata")
+	@ResponseBody
+	List<UserModel> getUsers(){
+		return fetchDataService.findAll();
+		
+	}
+	
+	
+	
 	@GetMapping("/employee-dashboard")
 	public String user() {
 		return "employeeDashboard";
@@ -56,13 +74,8 @@ public class HomeResource {
 	
 	
 	
-	@Autowired
-	FetchDataService fetchDataService;
 	
-	@GetMapping(path = "getdata")
-	List<UserModel> getUsers(){
-		return fetchDataService.findAll();
-		
-	}
+	
+	
 
 }

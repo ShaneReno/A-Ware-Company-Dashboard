@@ -1,3 +1,4 @@
+
 package io.shane.awareproject;
 
 import java.util.List;
@@ -13,3 +14,4 @@ public interface FetchDataService extends JpaRepository<UserModel, Integer>{
 
 
 }
+
