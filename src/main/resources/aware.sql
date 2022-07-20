@@ -29,8 +29,8 @@ insert into employees values ('kmackellerb@stanford.edu', 'ogKv066mO', 'Keslie M
 
 DROP TABLE if EXISTS roster;
 
-CREATE TABLE roster (employeeEmail varchar(60) PRIMARY KEY, employeeName varchar(60), weekNo int(2), monHours varchar(10), tuesHours varchar(10),
- wedHours varchar(10), thursHours varchar(10), friHours varchar(10), satHours varchar(10), sunHours varchar(10),  employeeDept varchar(60));
+CREATE TABLE roster (employee_email varchar(60) PRIMARY KEY, employee_name varchar(60), week_no int(2), mon_hours varchar(10), tues_hours varchar(10),
+ wed_hours varchar(10), thurs_hours varchar(10), fri_hours varchar(10), sat_hours varchar(10), sun_hours varchar(10),  employee_dept varchar(60));
 
 #Week number 12 roster
 insert into roster values ('ncraigie0@ezinearticles.com', 'Natty Craigie', 12, '9-5', '1-10', 'OFF', '8-5', '9-6', '1-10', '3-9', 'Clothing');

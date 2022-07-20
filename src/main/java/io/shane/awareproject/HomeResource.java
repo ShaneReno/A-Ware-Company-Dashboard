@@ -1,7 +1,10 @@
 package io.shane.awareproject;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +52,17 @@ public class HomeResource {
 	@GetMapping("/create-roster")
 	public String createRoster() {
 		return "createRoster";
+	}
+	
+	
+	
+	@Autowired
+	FetchDataService fetchDataService;
+	
+	@GetMapping(path = "getdata")
+	List<UserModel> getUsers(){
+		return fetchDataService.findAll();
+		
 	}
 
 }
