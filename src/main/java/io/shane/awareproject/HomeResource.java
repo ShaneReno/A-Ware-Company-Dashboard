@@ -1,21 +1,32 @@
 package io.shane.awareproject;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+
+@Controller
 public class HomeResource {
 	
-	@GetMapping("/")
+	
+	@GetMapping
 	public String home() {
-		return("<h1>Home Page</h1>");
+		return "index";
 	}
 	
 	
-	@GetMapping("/user")
+	@GetMapping("/employee-dashboard")
 	public String user() {
-		return("<h1>Welcome User</h1>");
+		return "employeeDashboard";
 	}
+	
+	@GetMapping("/employee-roster")
+	public String roster() {
+		return "employeeRoster";
+	}
+	
+	
 	
 	
 	@GetMapping("/admin")
