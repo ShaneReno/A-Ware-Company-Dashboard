@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<title>Employee Roster</title>
@@ -7,6 +7,53 @@
 <body>
 	<div align="center">
 		<h1>Employee Roster for Week</h1>
+	</div>
+	
+	<div align="center">
+	<h2>Employee roster</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Employee Email</th>
+					<th>Employee Name</th>
+					<th>Week Number</th>
+					<th>Monday</th>
+					<th>Tuesday</th>
+					<th>Wednesday</th>
+					<th>Thursday</th>
+					<th>Friday</th>
+					<th>Saturday</th>
+					<th>Sunday</th>
+					<th>Employee Department</th>
+				</tr>
+			</thead>
+			<tr th:each="roster:${roster}">
+				<td th:text="${roster.employeeEmail}"></td>
+				<td th:text="${roster.employeeName}"></td>
+				<td th:text="${roster.weekNo}"></td>
+				<td th:text="${roster.monHours}"></td>
+				<td th:text="${roster.tuesHours}"></td>
+				<td th:text="${roster.wedHours}"></td>
+				<td th:text="${roster.thursHours}"></td>
+				<td th:text="${roster.friHours}"></td>
+				<td th:text="${roster.satHours}"></td>
+				<td th:text="${roster.sunHours}"></td>
+				<td th:text="${roster.employeeDept}"></td>
+			</tr>
+			<tr>
+				<td>123@gmail.com</td>
+				<td>John Smith</td>
+				<td>12</td>
+				<td>9-5</td>
+				<td>1-10</td>
+				<td>1-10</td>
+				<td>OFF</td>
+				<td>OFF</td>
+				<td>1-10</td>
+				<td>1-10</td>
+				<td>Grocery</td>
+			</tr>
+		</table>
 	</div>
 	<div>
 	</div>

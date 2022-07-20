@@ -36,16 +36,29 @@ public class HomeResource {
 	
 	
 	@Autowired
-	FetchDataService fetchDataService;
+	RosterRepository rosterRepository;
 	
 	
-	
-	@GetMapping("getdata")
+	/*
+	@GetMapping("/getdata")
 	@ResponseBody
-	List<UserModel> getUsers(){
+	public List<UserModel> getUsers(){
 		return fetchDataService.findAll();
 		
 	}
+	*/
+	
+	@Autowired
+	private RosterService rosterService;
+	
+	@RequestMapping("/employee-roster")
+	public String getAll(Model model){
+		List<RosterModel> roster = rosterService.getAll();
+		model.addAttribute("roster", roster);
+		return "employeeRoster";
+	}
+		
+		
 	
 	
 	
@@ -54,10 +67,12 @@ public class HomeResource {
 		return "employeeDashboard";
 	}
 	
+	/*
 	@GetMapping("/employee-roster")
 	public String roster() {
 		return "employeeRoster";
 	}
+	*/
 	
 	
 	
