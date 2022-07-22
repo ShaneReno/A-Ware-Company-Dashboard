@@ -63,16 +63,30 @@ public class HomeResource {
 	
 	
 	@GetMapping("/employee-dashboard")
-	public String user() {
+	public String employeeDashboard() {
 		return "employeeDashboard";
 	}
 	
-	/*
-	@GetMapping("/employee-roster")
-	public String roster() {
-		return "employeeRoster";
+	@GetMapping("/employee-request-shift-swap")
+	public String employeeRequestShiftSwap() {
+		return "employeeShiftSwap";
 	}
-	*/
+	
+	@GetMapping("/employee-view-weather")
+	public String employeeViewWeather() {
+		return "employeeViewWeather";
+	}
+	
+	@GetMapping("/employee-view-payslip")
+	public String employeeViewPayslip() {
+		return "employeeViewPayslip";
+	}
+	
+	@GetMapping("/employee-request-holidays")
+	public String employeeRequestHolidays() {
+		return "employeeRequestHolidays";
+	}
+	
 	
 	
 	
