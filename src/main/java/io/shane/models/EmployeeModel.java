@@ -1,5 +1,5 @@
 
-package io.shane.awareproject;
+package io.shane.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

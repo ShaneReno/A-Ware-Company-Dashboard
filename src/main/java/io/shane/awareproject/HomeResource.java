@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.shane.models.EmployeeModel;
+import io.shane.models.RosterModel;
+import io.shane.services.EmployeeService;
+import io.shane.services.RosterService;
+
 
 @Controller
 public class HomeResource {

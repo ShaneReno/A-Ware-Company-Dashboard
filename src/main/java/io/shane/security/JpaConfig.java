@@ -1,5 +1,5 @@
 
-package io.shane.awareproject;
+package io.shane.security;
 
 import javax.sql.DataSource;
 
