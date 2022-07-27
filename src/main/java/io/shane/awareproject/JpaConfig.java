@@ -22,6 +22,7 @@ public class JpaConfig {
         return dataSourceBuilder.build();
     }
     
+    /*
 
     @Bean(name = "aware")
     public DataSource awareDataSource()
@@ -32,4 +33,5 @@ public class JpaConfig {
         dataSourceBuilder.password("datahouse");
         return dataSourceBuilder.build();
     }
+    */
 }

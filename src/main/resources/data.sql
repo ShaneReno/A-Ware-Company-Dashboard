@@ -16,9 +16,33 @@ CREATE unique index ix_auth_username on authorities (username,authority);
 
 
 insert into users values ('sreynolds', 'cherries51', true);	
-insert into users values ('ncraigie0@ezinearticles.com', 'YNlx7SHy', true);
+insert into users values ('xncraigie0@ezinearticles.com', 'YNlx7SHy', true);
+insert into users values ('ffranciskiewicz1@cnet.com', 'yzzeoFKb3ys', true);
+insert into users values ('ilythgoe2@marriott.com', '3vl3EyOS', true);
+insert into users values ('gwimlet3@oracle.com', 'wF63Ix0', true);
+insert into users values ('anormanvill4@upenn.edu', 'bqdHdhUoS9vN', true);
+insert into users values ('bshakle5@smh.com.au', 'SYNzFw2iEMFJ', true);
+insert into users values ('cstubbeley6@google.it', 'UpVXOY', true);
+insert into users values ('btrainer7@java.com', 'Ir1RW4pa', true);
+insert into users values ('bskillington8@nps.gov', '95JI8zHW', true);
+insert into users values ('gsimla9@w3.org', '70L8h6Q3p', true);
+insert into users values ('gsperwella@yelp.com', 'P17mVsLp1', true);
+insert into users values ('kmackellerb@stanford.edu', 'ogKv066mO', true);
+
+
 insert into authorities values ('sreynolds', 'ROLE_ADMIN');
-insert into authorities values ('ncraigie0@ezinearticles.com', 'ROLE_USER');
+insert into authorities values ('xncraigie0@ezinearticles.com', 'ROLE_USER');
+insert into authorities values ('ffranciskiewicz1@cnet.com', 'ROLE_USER');
+insert into authorities values ('ilythgoe2@marriott.com', 'ROLE_USER');
+insert into authorities values ('gwimlet3@oracle.com', 'ROLE_USER');
+insert into authorities values ('anormanvill4@upenn.edu', 'ROLE_USER');
+insert into authorities values ('bshakle5@smh.com.au', 'ROLE_USER');
+insert into authorities values ('cstubbeley6@google.it', 'ROLE_USER');
+insert into authorities values ('btrainer7@java.com', 'ROLE_USER');
+insert into authorities values ('bskillington8@nps.gov', 'ROLE_USER');
+insert into authorities values ('gsimla9@w3.org', 'ROLE_USER');
+insert into authorities values ('gsperwella@yelp.com', 'ROLE_USER');
+insert into authorities values ('kmackellerb@stanford.edu', 'ROLE_USER');
 
 
 

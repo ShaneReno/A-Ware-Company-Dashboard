@@ -96,12 +96,18 @@ public class HomeResource {
 		return "adminDashboard";
 	}
 	
-	@GetMapping("/create-roster")
+	@GetMapping("/admin-create-roster")
 	public String createRoster() {
-		return "createRoster";
+		return "adminCreateRoster";
 	}
 	
 	
+	@RequestMapping("/saveData")
+	@ResponseBody
+	public String saveData(RosterModel rosterModel) {
+		rosterRepository.save(rosterModel);
+		return "Success";
+	}
 	
 	
 	

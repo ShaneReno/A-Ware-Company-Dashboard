@@ -33,6 +33,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/create-roster").hasRole("ADMIN")
 			.antMatchers("/employee-dashboard").hasRole("USER")
 			.antMatchers("/employee-roster").hasRole("USER")
+			.antMatchers("/employee-request-holidays").hasRole("USER")
+			.antMatchers("/employee-request-shift-swap").hasRole("USER")
+			.antMatchers("/employee-view-weather").hasRole("USER")
+			.antMatchers("/employee-view-payslip").hasRole("USER")
 			.antMatchers("/").permitAll()
 			.and().formLogin().defaultSuccessUrl("/default");
 		}
