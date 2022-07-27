@@ -38,6 +38,9 @@ public class HomeResource {
 	@Autowired
 	RosterRepository rosterRepository;
 	
+	@Autowired
+	EmployeeRepository employeeRepository;
+	
 	
 	/*
 	@GetMapping("/getdata")
@@ -50,6 +53,8 @@ public class HomeResource {
 	
 	@Autowired
 	private RosterService rosterService;
+	@Autowired
+	private EmployeeService employeeService;
 	
 	@RequestMapping("/employee-roster")
 	public String getAll(Model model){
@@ -100,6 +105,17 @@ public class HomeResource {
 	public String createRoster() {
 		return "adminCreateRoster";
 	}
+	
+	@GetMapping("/admin-view-employee-records")
+	public String viewAllEmployees(Model model) {
+		List<RosterModel> roster = rosterService.getAll();
+		model.addAttribute("roster", roster);
+		
+		List<EmployeeModel> employee = employeeService.getAll();
+		model.addAttribute("employee", employee);
+		return "adminViewEmployeeRecords";
+	}
+	
 	
 	
 	@RequestMapping("/saveData")

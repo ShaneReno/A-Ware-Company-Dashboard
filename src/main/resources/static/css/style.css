@@ -55,7 +55,7 @@ p{
 }
 
 #headerSpace {
-	background: #C2DED1;
+	background: white;
 	width: 100vw;
 	padding-top: 3rem;
 	text-align: center;
@@ -64,6 +64,7 @@ p{
 #footerSpace {
 	background: linear-gradient(white 40%, #354259 60%);
 	padding-top: 6rem;
+	padding-bottom: 1rem;
 	text-align: center;
 	width: 100vw;
 }
@@ -72,10 +73,11 @@ p{
 	background: #C2DED1;
 	width: 100vw;
 	padding-top: 2rem;
+	padding-bottom: 2rem;
 }
 
 #dashboardBody {
-	padding-top: 7.5rem;
+	padding-top: 4.5rem;
 	padding-bottom: 6rem;
 	background: white;
 	width: 80vw;
@@ -88,7 +90,7 @@ p{
 
 #rosterTable {
 	padding-top: 3rem;
-	padding-bottom: 3rem; background : white;
+	padding-bottom: 2rem; background : white;
 	width: 80vw;
 	text-align: center;
 	background: white;
