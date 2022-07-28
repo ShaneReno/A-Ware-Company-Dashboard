@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Create Roster</title>
@@ -21,24 +21,70 @@
 
 
 			<div class="row justify-content-center" id="dashboardBody">
-				<form action = "/saveData">
-					<label>Enter Employee Email: </label>
-					<input type = "text" name = "Email"> <br>
-					
-					<label>Enter Employee Name: </label>
-					<input type = "text" name = "WeekNo"> <br>
-					
-					<label>Enter Week Number: </label>
-					<input type = "text" name = "WeekNo"> <br>
-					
-					
-					<input type = "submit" value="Submit hours for this employee">
-				</form>
+				<div align="center" class="col-sm-3"></div>
+				<div align="center" class="col-sm-8">
+
+					<form action="#" th:action="@{/update-data}" th:object="${roster}" method = "post">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th><label>Enter Employee Email: </label></th>
+									<th><input type="text" th:field="*{employeeEmail}" name="employeeEmail"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Employee Name: </label></th>
+									<th><input type="text" th:field="*{employeeName}" name="employeeName"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Week Number: </label></th>
+									<th><input type="text" th:field="*{weekNo}" name="weekNo"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Monday Hours: </label></th>
+									<th><input type="text" th:field="*{monHours}" name="monHours"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Tuesday Hours: </label></th>
+									<th><input type="text" th:field="*{tuesHours}" name="tuesHours"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Wednesday Hours: </label></th>
+									<th><input type="text" th:field="*{wedHours}" name="wedHours"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Thursday Hours: </label></th>
+									<th><input type="text" th:field="*{thursHours}" name="thursHours"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Friday Hours: </label></th>
+									<th><input type="text" th:field="*{friHours}" name="friHours"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Saturday Hours: </label></th>
+									<th><input type="text" th:field="*{satHours}" name="satHours"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Sunday Hours: </label></th>
+									<th><input type="text" th:field="*{sunHours}" name="sunHours"></th>
+								</tr>
+								<tr>
+									<th><label>Enter Employee Department: </label></th>
+									<th><input type="text" th:field="*{employeeDept}" name="employeeDept"></th>
+								</tr>
+								<tr>
+									<th> </th>
+									<th><input type="submit" value="Submit hours for this employee"></th>
+								</tr>
+
+							</thead>
+						</table>
+
+						
+					</form>
+				</div>
+				<div align="center" class="col-sm-1"></div>
+
 			</div>
-
-			<div class="row justify-content-center" id="dashboardBody"></div>
-
-
 
 			<div class="row justify-content-center" id="footerSpace">
 				<div class="col-sm-4">

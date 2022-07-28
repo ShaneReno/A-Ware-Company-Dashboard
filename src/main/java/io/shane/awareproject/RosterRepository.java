@@ -10,10 +10,12 @@ import org.springframework.stereotype.Repository;
 import io.shane.models.RosterModel;
 
 @Repository
-public interface RosterRepository extends CrudRepository<RosterModel, Integer>{
+public interface RosterRepository extends CrudRepository<RosterModel, String>{
 	
 	@Override
 	List<RosterModel> findAll();
+	
+	RosterModel findByemployeeEmail(String employeeEmail);
 
 
 }

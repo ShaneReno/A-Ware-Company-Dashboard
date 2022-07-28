@@ -40,6 +40,17 @@ p{
 	color: #CDC2AE;
 }
 
+
+
+
+input{
+	width: 20rem;
+}
+
+th{
+	text-align: left;
+}
+
 .dashboardButtons{
 	border-radius: 8px;
 	transition-duration: 0.4s;

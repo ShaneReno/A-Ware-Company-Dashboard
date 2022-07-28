@@ -28,10 +28,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception{
 			http.authorizeRequests()
-			.antMatchers("/admin").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard").hasRole("ADMIN")
 			.antMatchers("/admin-view-all-employees").hasRole("ADMIN")
-			.antMatchers("/create-roster").hasRole("ADMIN")
+			.antMatchers("/admin-create-roster").hasRole("ADMIN")
+			.antMatchers("/update-data").hasRole("ADMIN")
 			.antMatchers("/employee-dashboard").hasRole("USER")
 			.antMatchers("/employee-roster").hasRole("USER")
 			.antMatchers("/employee-request-holidays").hasRole("USER")

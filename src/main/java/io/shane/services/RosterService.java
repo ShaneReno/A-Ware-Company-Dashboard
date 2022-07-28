@@ -17,5 +17,13 @@ public class RosterService {
 	public List<RosterModel> getAll() {
 		return (List<RosterModel>) rosterRepository.findAll();
 	}
+	
+	public void update(RosterModel rosterModel) {
+		rosterRepository.save(rosterModel);
+	}
+	
+	public RosterModel get(String employeeEmail) {
+		return rosterRepository.findByemployeeEmail(employeeEmail);
+	}
 
 }
