@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create / Edit Roster</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+	crossorigin="anonymous">
+<link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container-fluid" id="wholePage">
+		<div class="row justify-content-center">
+			<div align="center" class="col-sm-12" id="rosterHeader">
+				<h1>Update Entry</h1>
+			</div>
+			<div class="row justify-content-center" id="headerSpace"></div>
+
+
+			<div class="row justify-content-center"
+				id="dashboardBodyCreateRosterAddOn">
+				<div align="center" class="col-sm-3"></div>
+				<div align="center" class="col-sm-8">
+
+
+				
+					
+					<form th:action="@{/saveRosteredEmployee}" th:object="${roster}" method="post">
+					<input type="hidden" th:field = "*{employeeId}" />
+						<table class="table table-striped">
+							
+							<thead>
+								<tr>
+									<th class="customTH"><label>Enter Employee Email: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{employeeEmail}" name="employeeEmail"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Employee Name: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{employeeName}" name="employeeName"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Week Number: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{weekNo}" name="weekNo"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Monday Hours: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{monHours}" name="monHours"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Tuesday Hours: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{tuesHours}" name="tuesHours"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Wednesday Hours: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{wedHours}" name="wedHours"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Thursday Hours: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{thursHours}" name="thursHours"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Friday Hours: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{friHours}" name="friHours"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Saturday Hours: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{satHours}" name="satHours"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Sunday Hours: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{sunHours}" name="sunHours"></th>
+								</tr>
+								<tr>
+									<th class="customTH"><label>Enter Employee Department: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{employeeDept}" name="employeeDept"></th>
+								</tr>
+								<tr>
+									<th class="customTH"> </th>
+									<th class="customTH"><input type="submit" value="Submit hours for this employee"></th>
+								</tr>
+
+							</thead>
+						</table>
+
+						
+					</form>
+
+
+
+
+				</div>
+				<div align="center" class="col-sm-1"></div>
+
+			</div>
+
+			<div class="row justify-content-center" id="footerSpace">
+				<div class="col-sm-4">
+					<a href="/admin-dashboard"><button type="button">Return
+							to Dashboard</button></a>
+				</div>
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4">
+					<a href="/logout"><button type="button">Logout</button></a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>

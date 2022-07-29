@@ -112,11 +112,11 @@ public class MainController {
 		return "adminDashboard";
 	}
 	
-	@GetMapping("/admin-dashboard/admin-create-roster")
+	@GetMapping("/admin-dashboard/admin-add-employee-to-roster")
 	public String createRoster(Model model) {
 		RosterModel roster = new RosterModel();
 		model.addAttribute("roster", roster);
-		return "adminCreateRoster";
+		return "adminAddEmployeeToRoster";
 	}
 	
 	@PostMapping("/saveRosteredEmployee")
@@ -162,6 +162,32 @@ public class MainController {
 		return "redirect:/admin-dashboard";
 		
 	}
+	
+	
+	@GetMapping("/admin-dashboard/admin-view-create-roster")
+	public String createEditRoster(Model model) {
+		RosterModel roster = new RosterModel();
+		List<RosterModel> rosterList = rosterService.getAllRosteredEmployees();
+		model.addAttribute("roster", roster); //key value pair for form binding
+		model.addAttribute("roster", rosterList);
+		return "adminCreateEditRoster";
+	}
+	
+	@GetMapping("/saveCreateEditRoster/{id}")
+	public String saveCreateEditRoster(@PathVariable (value="id") int id, Model model) {
+		RosterModel roster = rosterService.getEmployeeByemployeeId(id);
+		model.addAttribute("roster", roster);
+		return "adminCreateEditRosterInfo";
+	}
+	
+	/*
+	@PostMapping("/saveCreateEditRoster")
+	public String saveCreateEditRoster(@ModelAttribute("roster") RosterModel roster) {
+		rosterService.saveRosteredEmployee(roster);
+		return null;
+		
+	}
+	*/
 	
 	
 	@GetMapping("/admin-dashboard/admin-view-employee-records")

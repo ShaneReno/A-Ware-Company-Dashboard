@@ -16,8 +16,8 @@ public interface RosterRepository extends JpaRepository<RosterModel, Integer>{
 	@Override
 	List<RosterModel> findAll();
 	
-	RosterModel findById(int employeeId);
-
+	Optional<RosterModel> findByemployeeId(int id);
+	RosterModel findByemployeeEmail(String employeeEmail);
 
 }
 

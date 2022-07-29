@@ -32,6 +32,20 @@ public class RosterServiceImpl implements RosterService {
 	public void saveRosteredEmployee(RosterModel rosterModel) {
 		this.rosterRepository.save(rosterModel);
 	}
+
+	@Override
+	public RosterModel getEmployeeByemployeeId(int id) {
+		Optional<RosterModel> optional = rosterRepository.findByemployeeId(id);
+		RosterModel roster = null;
+		
+		if(optional.isPresent()) {
+			roster = optional.get();
+		}
+		else {
+			throw new RuntimeException("Employee not found for ID :: " + id);
+		}
+		return roster;
+	}
 	
 	/*
 	public RosterModel get(String employeeEmail) {

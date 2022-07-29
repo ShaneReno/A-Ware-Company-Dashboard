@@ -52,6 +52,7 @@ CREATE TABLE roster (employeeid int PRIMARY KEY, employeeemail varchar(60), empl
  wedhours varchar(10), thurshours varchar(10), frihours varchar(10), sathours varchar(10), sunhours varchar(10),  employeedept varchar(60));
 
 #Week number 12 roster
+insert into roster values (0, 'wandapatel@yahoo.ie', 'Wanda Patel', 12, 'OFF', 'OFF', 'OFF', '8-5', '9-6', '2-7', '3-9', 'Clothing');
 insert into roster values (1, 'jimothy@hotmail.com', 'Jim Othy', 12, '9-5', '1-10', 'OFF', '8-5', '9-6', '1-10', '3-9', 'Clothing');
 insert into roster values (2, 'ffranciskiewicz1@cnet.com', 'Flory Franciskiewicz', 12, 'OFF', '9-5', 'OFF', '8-5', '9-6', '1-10', '3-9', 'Beauty');
 insert into roster values (3, 'ilythgoe2@marriott.com', 'Ivory Lythgoe', 12, 'OFF', '9-5', '1-10', '8-5', '9-6', '1-10', '3-9', 'Electronics');
