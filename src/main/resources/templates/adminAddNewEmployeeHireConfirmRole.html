@@ -24,24 +24,21 @@
 				<div align="center" class="col-sm-3"></div>
 				<div align="center" class="col-sm-8">
 
-					<form th:action="@{/saveEmployeeHire}" th:object="${employee}" method="post">
+					
+					<form th:action="@{/saveRoleHire}" th:object="${role}" method="post">
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th class="customTH"><label>Enter New Hire Email: </label></th>
+									<th class="customTH"><label>Confirm New Hire's Email Again: </label></th>
 									<th class="customTH"><input type="text" th:field = "*{username}" name="username"></th>
 								</tr>
 								<tr>
-									<th class="customTH"><label>Enter New Hire Password: </label></th>
-									<th class="customTH"><input type="text" th:field = "*{password}" name="password"></th>
-								</tr>
-								<tr>
-									<th class="customTH"><label>Enter New Hire Enabled (true/false): </label></th>
-									<th class="customTH"><input type="text" th:field = "*{enabled}" name="weekNo"></th>
+									<th class="customTH"><label>Enter New Role: </label></th>
+									<th class="customTH"><input type="text" th:field = "*{authority}" name="password"></th>
 								</tr>
 								<tr>
 									<th class="customTH"> </th>
-									<th class="customTH"><input type="submit" value="Confirm New Employee's Credentials"></th>
+									<th class="customTH"><input type="submit" value="Confirm Role of New Employee"></th>
 								</tr>
 
 							</thead>

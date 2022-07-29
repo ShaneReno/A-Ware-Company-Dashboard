@@ -14,13 +14,15 @@ public class EmployeeModel {
 	
 	//Mapping the table columns to variables
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
 	
 	@Column(name = "username")
 	String username;
 	
 	@Column(name = "password")
 	String password;
+	
+	@Column(name = "enabled")
+	boolean enabled;
 
 	public String getUsername() {
 		return username;
@@ -38,19 +40,34 @@ public class EmployeeModel {
 		this.password = password;
 	}
 
-	public EmployeeModel(String username, String password) {
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	
+	
+	
+	public EmployeeModel(String username, String password, boolean enabled) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.enabled = enabled;
 	}
-	
+
+
 	//Default constructor with no parameters.
 	public EmployeeModel() {
 	}
 
+	
+	
 	@Override
 	public String toString() {
-		return "employeeModel [username=" + username + ", password=" + password + "]";
+		return "EmployeeModel [username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
 	}
 	
 	

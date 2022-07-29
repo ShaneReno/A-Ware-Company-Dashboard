@@ -71,7 +71,7 @@
 				<div class="row justify-content-center" id="headerSpace">
 					<div class="col-sm-12">
 						<h2>
-							Current Employee Credentials
+							User Credentials
 						</h2>
 					</div>
 
@@ -85,15 +85,48 @@
 							<tr>
 								<th>Employee Email</th>
 								<th>Employee Password</th>
+								<th>Employee Enabled</th>
 							</tr>
 						</thead>
 						<tr th:each="employee:${employee}">
 							<td th:text="${employee.username}"></td>
 							<td th:text="${employee.password}"></td>
+							<td th:text="${employee.enabled}"></td>
 						</tr>
 					</table>
 
 				</div>
+				
+				
+				
+				
+				<div class="row justify-content-center" id="headerSpace">
+					<div class="col-sm-12">
+						<h2>
+							User Positions and Roles
+						</h2>
+					</div>
+
+				</div>
+
+
+
+				<div class="col-sm-12" id="rosterTable">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Employee Email</th>
+								<th>Employee Position</th>
+							</tr>
+						</thead>
+						<tr th:each="role:${role}">
+							<td th:text="${role.username}"></td>
+							<td th:text="${role.authority}"></td>
+						</tr>
+					</table>
+
+				</div>
+				
 			</div>
 
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Employee Dashboard</title>
@@ -20,6 +20,8 @@
 				</div>
 				<div align="center" class="col-sm-8">
 					<h1>Employee Dashboard</h1>
+					<p id = "signedInText">Welcome, <span th:text="${#authentication.getPrincipal().getUsername()}"></span> </p>
+					<p id = "signedInText">Position: <span th:text="${#authentication.getPrincipal().authorities}"></span>
 				</div>
 				<div align="center" class="col-sm-2"></div>
 			</div>

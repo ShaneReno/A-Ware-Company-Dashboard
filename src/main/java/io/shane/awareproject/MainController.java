@@ -17,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.shane.models.EmployeeModel;
+import io.shane.models.RoleModel;
 import io.shane.models.RosterModel;
-import io.shane.services.EmployeeService;
+import io.shane.services.EmployeeServiceImpl;
+import io.shane.services.RoleService;
 import io.shane.services.RosterService;
 import io.shane.services.RosterServiceImpl;
 
@@ -43,18 +45,27 @@ public class MainController {
 	
 	//Mapping for the employee user account
 	
-	
 	@Autowired
 	RosterRepository rosterRepository;
-	
 	@Autowired
 	EmployeeRepository employeeRepository;
-	
+	@Autowired
+	RoleRepository roleRepository;
 	
 	@Autowired
 	private RosterService rosterService;
 	@Autowired
-	private EmployeeService employeeService;
+	private EmployeeServiceImpl employeeService;
+	@Autowired
+	private RoleService roleService;
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping("/employee-dashboard/employee-roster")
 	public String getAll(Model model){
@@ -117,6 +128,42 @@ public class MainController {
 	
 	
 	
+	
+	
+	
+	
+	@GetMapping("/admin-dashboard/admin-add-new-employee-hire")
+	public String addHire(Model model) {
+		EmployeeModel employee = new EmployeeModel();
+		model.addAttribute("employee", employee);
+		return "adminAddNewEmployeeHire";
+	}
+	
+	
+	@GetMapping("/admin-dashboard/admin-add-new-employee-hire-confirm-role")
+	public String addRole(Model model) {
+		RoleModel role = new RoleModel();
+		model.addAttribute("role", role);
+		return "adminAddNewEmployeeHireConfirmRole";
+	}
+
+	
+	//Setting the credentials of new registered employee
+	@PostMapping("/saveEmployeeHire")
+	public String saveEmployeeHire(@ModelAttribute("employee") EmployeeModel employee) {
+		employeeService.saveEmployeeHire(employee);
+		return "redirect:/admin-dashboard/admin-add-new-employee-hire-confirm-role";
+	}
+	
+	//Setting the role authority of new registered employee
+	@PostMapping("/saveRoleHire")
+	public String saveRoleHire(@ModelAttribute("role") RoleModel role) {
+		roleService.saveRole(role);
+		return "redirect:/admin-dashboard";
+		
+	}
+	
+	
 	@GetMapping("/admin-dashboard/admin-view-employee-records")
 	public String viewAllEmployees(Model model) {
 		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
@@ -124,13 +171,13 @@ public class MainController {
 		
 		List<EmployeeModel> employee = employeeService.getAll();
 		model.addAttribute("employee", employee);
+		
+		List<RoleModel> role = roleService.getAllRoles();
+		model.addAttribute("role", role);
 		return "adminViewEmployeeRecords";
 	}
 	
-	@GetMapping("/admin-dashboard/admin-add-new-employee-hire")
-	public String addHire() {
-		return "adminAddNewEmployeeHire";
-	}
+	
 	
 
 }

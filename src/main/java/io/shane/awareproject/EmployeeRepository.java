@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import io.shane.models.EmployeeModel;
 
 @Repository
-public interface EmployeeRepository extends CrudRepository<EmployeeModel, Integer>{
+public interface EmployeeRepository extends CrudRepository<EmployeeModel, String>{
 	
 	@Override
 	List<EmployeeModel> findAll();
