@@ -126,6 +126,11 @@ public class MainController {
 	}
 	
 	
+	@PostMapping("/saveRosteredEmployee2")
+	public String saveRosteredEmployee2(@ModelAttribute("roster") RosterModel roster) {
+		rosterService.saveRosteredEmployee(roster);
+		return "redirect:/admin-dashboard/admin-view-create-roster";
+	}
 	
 	
 	
@@ -162,6 +167,9 @@ public class MainController {
 		return "redirect:/admin-dashboard";
 		
 	}
+	
+	
+	
 	
 	
 	@GetMapping("/admin-dashboard/admin-view-create-roster")
