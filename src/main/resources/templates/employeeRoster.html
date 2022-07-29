@@ -30,6 +30,7 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
+								<th>Employee ID</th>
 								<th>Employee Email</th>
 								<th>Employee Name</th>
 								<th>Week Number</th>
@@ -44,6 +45,7 @@
 							</tr>
 						</thead>
 						<tr th:each="roster:${roster}">
+							<td th:text="${roster.employeeId}"></td>
 							<td th:text="${roster.employeeEmail}"></td>
 							<td th:text="${roster.employeeName}"></td>
 							<td th:text="${roster.weekNo}"></td>

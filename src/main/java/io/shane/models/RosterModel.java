@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -13,8 +14,12 @@ import javax.persistence.Table;
 public class RosterModel {
 	
 	//Mapping the table columns to variables
+	
+	@GeneratedValue(generator = "merge_id_seq", strategy = GenerationType.AUTO)
+	@Column(name = "employeeid")
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	int employeeId;
 	
 	@Column(name = "employeeemail")
 	String employeeEmail;
@@ -52,8 +57,19 @@ public class RosterModel {
 	
 	
 	//Getters and setters for the roster
+	
+	
+	
 	public String getEmployeeEmail() {
 		return employeeEmail;
+	}
+
+	public int getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
 	}
 
 	public void setEmployeeEmail(String employeeEmail) {
@@ -140,10 +156,12 @@ public class RosterModel {
 		this.employeeDept = employeeDept;
 	}
 
-	public RosterModel(String employeeEmail, String employeeName, int weekNo, String monHours, String tuesHours,
-			String wedHours, String thursHours, String friHours, String satHours, String sunHours,
+	
+	public RosterModel(int employeeId, String employeeEmail, String employeeName, int weekNo, String monHours,
+			String tuesHours, String wedHours, String thursHours, String friHours, String satHours, String sunHours,
 			String employeeDept) {
 		super();
+		this.employeeId = employeeId;
 		this.employeeEmail = employeeEmail;
 		this.employeeName = employeeName;
 		this.weekNo = weekNo;
@@ -156,16 +174,18 @@ public class RosterModel {
 		this.sunHours = sunHours;
 		this.employeeDept = employeeDept;
 	}
-	
+
 	public RosterModel() {
 	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "UserModel [employeeEmail=" + employeeEmail + ", employeeName=" + employeeName + ", weekNo=" + weekNo
-				+ ", monHours=" + monHours + ", tuesHours=" + tuesHours + ", wedHours=" + wedHours + ", thursHours="
-				+ thursHours + ", friHours=" + friHours + ", satHours=" + satHours + ", sunHours=" + sunHours
-				+ ", employeeDept=" + employeeDept + "]";
+		return "RosterModel [employeeId=" + employeeId + ", employeeEmail=" + employeeEmail + ", employeeName="
+				+ employeeName + ", weekNo=" + weekNo + ", monHours=" + monHours + ", tuesHours=" + tuesHours
+				+ ", wedHours=" + wedHours + ", thursHours=" + thursHours + ", friHours=" + friHours + ", satHours="
+				+ satHours + ", sunHours=" + sunHours + ", employeeDept=" + employeeDept + "]";
 	}
 	
 	

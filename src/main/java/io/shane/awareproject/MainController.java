@@ -7,24 +7,23 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.shane.models.EmployeeModel;
 import io.shane.models.RosterModel;
 import io.shane.services.EmployeeService;
 import io.shane.services.RosterService;
-
+import io.shane.services.RosterServiceImpl;
 
 @Controller
-public class HomeResource {
+public class MainController {
 	
 	@RequestMapping("/default")
     public String defaultAfterLogin(HttpServletRequest request) {
@@ -52,15 +51,6 @@ public class HomeResource {
 	EmployeeRepository employeeRepository;
 	
 	
-	/*
-	@GetMapping("/getdata")
-	@ResponseBody
-	public List<UserModel> getUsers(){
-		return fetchDataService.findAll();
-		
-	}
-	*/
-	
 	@Autowired
 	private RosterService rosterService;
 	@Autowired
@@ -68,7 +58,7 @@ public class HomeResource {
 	
 	@RequestMapping("/employee-dashboard/employee-roster")
 	public String getAll(Model model){
-		List<RosterModel> roster = rosterService.getAll();
+		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
 		model.addAttribute("roster", roster);
 		return "employeeRoster";
 	}
@@ -112,13 +102,24 @@ public class HomeResource {
 	}
 	
 	@GetMapping("/admin-dashboard/admin-create-roster")
-	public String createRoster() {
+	public String createRoster(Model model) {
+		RosterModel roster = new RosterModel();
+		model.addAttribute("roster", roster);
 		return "adminCreateRoster";
 	}
 	
+	@PostMapping("/saveRosteredEmployee")
+	public String saveRosteredEmployee(@ModelAttribute("roster") RosterModel roster) {
+		rosterService.saveRosteredEmployee(roster);
+		return "redirect:/admin-dashboard";
+	}
+	
+	
+	
+	
 	@GetMapping("/admin-dashboard/admin-view-employee-records")
 	public String viewAllEmployees(Model model) {
-		List<RosterModel> roster = rosterService.getAll();
+		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
 		model.addAttribute("roster", roster);
 		
 		List<EmployeeModel> employee = employeeService.getAll();
@@ -126,61 +127,10 @@ public class HomeResource {
 		return "adminViewEmployeeRecords";
 	}
 	
-	
-	
-	@RequestMapping("/update-data/{employeeEmail}")
-	public ModelAndView showEdit(@PathVariable(name="employeeEmail")String employeeEmail) {
-		ModelAndView mav = new ModelAndView("adminCreateRoster");
-		RosterModel roster = rosterService.get(employeeEmail);
-		mav.addObject("roster", roster);
-		return mav;
-		
+	@GetMapping("/admin-dashboard/admin-add-new-employee-hire")
+	public String addHire() {
+		return "adminAddNewEmployeeHire";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	@RequestMapping("/saveData")
-	@ResponseBody
-	public String saveData(RosterModel rosterModel) {
-		rosterRepository.save(rosterModel);
-		return "Success";
-	}
-	*/
-	
-	/*
-	@RequestMapping("/update-data")
-	@ResponseBody
-	public String update(RosterModel rosterModel) {
-		RosterModel updateRoster = rosterRepository.findByemployeeEmail(rosterModel.getEmployeeEmail());
-		updateRoster.setEmployeeName(rosterModel.getEmployeeName());
-		updateRoster.setWeekNo(rosterModel.getWeekNo());
-		updateRoster.setMonHours(rosterModel.getMonHours());
-		updateRoster.setTuesHours(rosterModel.getTuesHours());
-		updateRoster.setWedHours(rosterModel.getWedHours());
-		updateRoster.setThursHours(rosterModel.getThursHours());
-		updateRoster.setFriHours(rosterModel.getFriHours());
-		updateRoster.setSatHours(rosterModel.getSatHours());
-		updateRoster.setSunHours(rosterModel.getSunHours());
-		updateRoster.setEmployeeDept(rosterModel.getEmployeeDept());
-		rosterRepository.save(updateRoster);
-		return "adminCreateRoster";
-	}
-	*/
-	
-	/*
-	@RequestMapping(value="/update-data", method = {RequestMethod.PUT, RequestMethod.GET})
-	@ResponseBody
-	public String update(RosterModel rosterModel) {
-		rosterService.update(rosterModel);
-		return "adminCreateRoster";
-	}
-	*/
 
 }

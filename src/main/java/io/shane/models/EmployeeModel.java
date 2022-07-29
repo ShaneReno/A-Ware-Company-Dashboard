@@ -14,7 +14,7 @@ public class EmployeeModel {
 	
 	//Mapping the table columns to variables
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	
 	@Column(name = "username")
 	String username;

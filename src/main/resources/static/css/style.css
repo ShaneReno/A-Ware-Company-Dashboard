@@ -51,6 +51,8 @@ th{
 	text-align: left;
 }
 
+
+
 .dashboardButtons{
 	border-radius: 8px;
 	transition-duration: 0.4s;
@@ -63,6 +65,16 @@ th{
 	justify-content: center;
 	align-items: center;
 	padding: 0px;
+}
+
+
+#dashboardBodyCreateRosterAddOn{
+	padding-top: 4.5rem;
+	padding-bottom:0rem;
+	background: white;
+	width: 80vw;
+	text-align: center;
+	
 }
 
 #headerSpace {
