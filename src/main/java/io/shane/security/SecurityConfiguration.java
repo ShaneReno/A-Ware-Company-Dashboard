@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/saveCreateEditRoster").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-view-employee-records").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-add-new-employee-hire").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/admin-fire-employee").hasRole("ADMIN")
 			
 			.antMatchers("/employee-dashboard").hasRole("USER")
 			.antMatchers("/employee-roster").hasRole("USER")
