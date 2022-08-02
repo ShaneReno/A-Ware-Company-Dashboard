@@ -183,9 +183,17 @@ public class MainController {
 	
 	@GetMapping("/saveCreateEditRoster/{id}")
 	public String saveCreateEditRoster(@PathVariable (value="id") int id, Model model) {
+		//update method
 		RosterModel roster = rosterService.getEmployeeByemployeeId(id);
 		model.addAttribute("roster", roster);
 		return "adminCreateEditRosterInfo";
+	}
+	
+	@GetMapping("/deleteCreateEditRoster/{id}")
+	public String deleteRosteredEmployee(@PathVariable (value="id") int id) {
+		//delete method
+		this.rosterService.deleteRosteredEmployeeById(id);
+		return "adminDashboard";
 	}
 	
 	/*

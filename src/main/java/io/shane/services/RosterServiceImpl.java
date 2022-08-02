@@ -33,6 +33,7 @@ public class RosterServiceImpl implements RosterService {
 		this.rosterRepository.save(rosterModel);
 	}
 
+	//update method
 	@Override
 	public RosterModel getEmployeeByemployeeId(int id) {
 		Optional<RosterModel> optional = rosterRepository.findByemployeeId(id);
@@ -45,6 +46,12 @@ public class RosterServiceImpl implements RosterService {
 			throw new RuntimeException("Employee not found for ID :: " + id);
 		}
 		return roster;
+	}
+
+	//Delete method
+	@Override
+	public void deleteRosteredEmployeeById(int id) {
+		this.rosterRepository.deleteById(id);
 	}
 	
 	/*

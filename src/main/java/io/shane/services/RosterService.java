@@ -8,4 +8,5 @@ public interface RosterService {
 	List<RosterModel> getAllRosteredEmployees();
 	void saveRosteredEmployee(RosterModel rosterModel);
 	RosterModel getEmployeeByemployeeId(int id);
+	void deleteRosteredEmployeeById(int id);
 }
