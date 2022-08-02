@@ -1,9 +1,19 @@
 package io.shane.awareproject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,10 +83,7 @@ public class MainController {
 		return "employeeShiftSwap";
 	}
 
-	@GetMapping("/employee-dashboard/employee-view-weather")
-	public String employeeViewWeather() {
-		return "employeeViewWeather";
-	}
+	
 
 	@GetMapping("/employee-dashboard/employee-view-payslip")
 	public String employeeViewPayslip() {
@@ -87,6 +94,80 @@ public class MainController {
 	public String employeeRequestHolidays() {
 		return "employeeRequestHolidays";
 	}
+	
+	@RequestMapping("/employee-dashboard/employee-view-weather")
+	public String employeeViewWeather(Model model) throws IOException, ParseException {
+		URL url;
+		try {
+			url = new URL ("http://dataservice.accuweather.com/currentconditions/v1/207931?apikey=brnuJdH3fQ0kG6Vz6cfgshueYWOdeXnb&details=true");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			connection.connect();
+			int responseCode = connection.getResponseCode();
+
+			if(responseCode != 200) {
+				return "error503";
+				//throw new RuntimeException("HTTP Response code: " + responseCode);
+				
+			}
+			else {
+				StringBuilder detailString = new StringBuilder();
+				Scanner scan = new Scanner(url.openStream());
+				
+				while(scan.hasNext()) {
+					detailString.append(scan.nextLine());
+					
+				}
+				scan.close();
+				//System.out.println(detailString);
+				
+				JSONParser parser = new JSONParser();
+				JSONArray dataObject = (JSONArray) parser.parse(String.valueOf(detailString));
+				
+				//System.out.println(dataObject.get(0));
+				
+				//Navigating through JSONs
+				JSONObject dataCountry = (JSONObject) dataObject.get(0);
+				JSONObject dataCountry2 = (JSONObject) dataCountry.get("Temperature");
+				JSONObject dataCountry3 = (JSONObject) dataCountry2.get("Metric");
+				
+				JSONObject dataCountryWindSpeed = (JSONObject) dataCountry.get("Wind");
+				JSONObject dataCountryWindSpeed2 = (JSONObject) dataCountryWindSpeed.get("Speed");
+				JSONObject dataCountryWindSpeed3 = (JSONObject) dataCountryWindSpeed2.get("Metric");
+				//String weather = dataCountry3.get("Value");
+				
+				
+				//Strings for testing
+				//System.out.println("Temperature in Dublin is: " + dataCountry3.get("Value") + "C");
+				//System.out.println("Raining in Dublin: " + dataCountry.get("HasPrecipitation"));
+				model.addAttribute("weather", dataCountry3.get("Value"));
+				model.addAttribute("weatherRain", dataCountry.get("HasPrecipitation"));
+				model.addAttribute("weatherWindSpeed", dataCountryWindSpeed3.get("Value"));
+				
+				
+				//if it is raining in dublin, display rain picture. Vice versa for sun.
+				if(dataCountry.get("HasPrecipitation").toString() == "true") {
+					model.addAttribute("image", "/images/rain.png");
+				}
+				else {
+					model.addAttribute("image", "/images/sun.png");
+				}
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			System.out.println("ERRORRRR");
+		}
+		
+		return "employeeViewWeather";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	// Mapping for the manager user account
 	@GetMapping("/admin-dashboard")

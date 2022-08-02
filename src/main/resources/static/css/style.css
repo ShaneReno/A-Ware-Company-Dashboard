@@ -51,6 +51,11 @@ th{
 	text-align: center;
 }
 
+img{
+	max-width:5rem;
+	max-height:20rem;
+}
+
 
 .customTH{
 	text-align: left;

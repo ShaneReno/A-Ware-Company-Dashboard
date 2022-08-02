@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>View Weather</title>
@@ -20,7 +20,28 @@
 			<div class="row justify-content-center" id="headerSpace"></div>
 
 
-			<div class="row justify-content-center" id="dashboardBody"></div>
+			<div class="row justify-content-center" id="dashboardBody">
+				<div align="center" class="col-sm-4" id="rosterHeader">
+				</div>
+				<div align="center" class="col-sm-4" id="rosterHeader">
+					<img th:src="${image}" alt="AWare-Weather-Situation">
+				</div>
+				<div align="center" class="col-sm-4" id="rosterHeader">
+				</div>
+
+				<h2>
+					Temperature in Dublin: <span th:text="${weather}"> </span> C
+				</h2>
+				<h2>
+					Raining in Dublin: <span th:text="${weatherRain}"></span>
+				</h2>
+				<h2></h2>
+				<h2>
+					Wind Speed in Dublin: <span th:text="${weatherWindSpeed}"></span>
+					km/h
+				</h2>
+				<h2></h2>
+			</div>
 
 			<div class="row justify-content-center" id="dashboardBody"></div>
 
