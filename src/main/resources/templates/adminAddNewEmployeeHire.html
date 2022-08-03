@@ -37,7 +37,11 @@
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter New Hire Enabled (true/false): </label></th>
-									<th class="customTH"><input type="text" th:field = "*{enabled}" name="weekNo"></th>
+									<th><select th:field = "*{enabled}" name="enabled" id="enabled">
+    										<option value="true">true</option>
+    										<option value="false">false</option>
+  										</select>
+  									</th>
 								</tr>
 								<tr>
 									<th class="customTH"> </th>

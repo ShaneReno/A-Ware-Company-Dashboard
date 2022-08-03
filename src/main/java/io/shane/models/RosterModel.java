@@ -54,7 +54,8 @@ public class RosterModel {
 	@Column(name = "employeedept")
 	String employeeDept;
 
-	
+	@Column(name = "employeehours")
+	int employeeHours;
 	
 	//Getters and setters for the roster
 	
@@ -156,10 +157,17 @@ public class RosterModel {
 		this.employeeDept = employeeDept;
 	}
 
-	
+	public int getEmployeeHours() {
+		return employeeHours;
+	}
+
+	public void setEmployeeHours(int employeeHours) {
+		this.employeeHours = employeeHours;
+	}
+
 	public RosterModel(int employeeId, String employeeEmail, String employeeName, int weekNo, String monHours,
 			String tuesHours, String wedHours, String thursHours, String friHours, String satHours, String sunHours,
-			String employeeDept) {
+			String employeeDept, int employeeHours) {
 		super();
 		this.employeeId = employeeId;
 		this.employeeEmail = employeeEmail;
@@ -173,6 +181,7 @@ public class RosterModel {
 		this.satHours = satHours;
 		this.sunHours = sunHours;
 		this.employeeDept = employeeDept;
+		this.employeeHours = employeeHours;
 	}
 
 	public RosterModel() {
@@ -185,7 +194,8 @@ public class RosterModel {
 		return "RosterModel [employeeId=" + employeeId + ", employeeEmail=" + employeeEmail + ", employeeName="
 				+ employeeName + ", weekNo=" + weekNo + ", monHours=" + monHours + ", tuesHours=" + tuesHours
 				+ ", wedHours=" + wedHours + ", thursHours=" + thursHours + ", friHours=" + friHours + ", satHours="
-				+ satHours + ", sunHours=" + sunHours + ", employeeDept=" + employeeDept + "]";
+				+ satHours + ", sunHours=" + sunHours + ", employeeDept=" + employeeDept + ", employeeHours="
+				+ employeeHours + "]";
 	}
 	
 	

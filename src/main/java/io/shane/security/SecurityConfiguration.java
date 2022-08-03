@@ -28,22 +28,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception{
 			http.authorizeRequests()
+			//Admin users authorisation for pages
 			.antMatchers("/admin-dashboard").hasRole("ADMIN")
-			.antMatchers("/admin-view-all-employees").hasRole("ADMIN")
-			.antMatchers("/admin-create-roster").hasRole("ADMIN")
-			.antMatchers("/update-data").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/admin-view-all-employees").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/admin-create-roster").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-view-create-roster").hasRole("ADMIN")
-			.antMatchers("/saveCreateEditRoster").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/saveCreateEditRoster").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-view-employee-records").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-add-new-employee-hire").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-fire-employee").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/updateEmployee").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/admin-fire-employee").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/deleteEmployee").hasRole("ADMIN")
 			
+			///Employee users authorisation for pages
 			.antMatchers("/employee-dashboard").hasRole("USER")
-			.antMatchers("/employee-roster").hasRole("USER")
-			.antMatchers("/employee-request-holidays").hasRole("USER")
-			.antMatchers("/employee-request-shift-swap").hasRole("USER")
-			.antMatchers("/employee-view-weather").hasRole("USER")
-			.antMatchers("/employee-view-payslip").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-roster").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-request-holidays").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-request-shift-swap").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-view-weather").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-view-payslip").hasRole("USER")
 			.antMatchers("/").permitAll()
 			.and().formLogin().defaultSuccessUrl("/default");
 		}

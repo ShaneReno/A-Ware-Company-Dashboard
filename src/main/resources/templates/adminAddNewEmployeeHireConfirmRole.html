@@ -34,7 +34,11 @@
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter New Role: </label></th>
-									<th class="customTH"><input type="text" th:field = "*{authority}" name="password"></th>
+									<th><select th:field = "*{authority}" name="role" id="role">
+    										<option value="ROLE_USER">ROLE_USER</option>
+    										<option value="ROLE_ADMIN">ROLE_ADMIN</option>
+  										</select>
+  									</th>
 								</tr>
 								<tr>
 									<th class="customTH"> </th>

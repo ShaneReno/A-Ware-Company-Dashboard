@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>View Payslip</title>
@@ -17,10 +17,54 @@
 			<div align="center" class="col-sm-12" id="rosterHeader">
 				<h1>View Payslip</h1>
 			</div>
-			<div class="row justify-content-center" id="headerSpace"></div>
+
+			
+			<div class="row justify-content-center" id="rosterTable">
+				
+				<div align="center" class="col-sm-6" id="rosterTable">
+
+					<h2>
+						Payslip for <span
+							th:text="${#authentication.getPrincipal().getUsername()}"></span>
+					</h2>
+					<hr>
+
+					<table class="table table-striped">
+						<tr>
+							<td>Week Number</td>
+							<td th:text="${weekNo}"></td>
+						</tr>
+
+						<tr>
+							<td>Hours worked</td>
+							<td th:text="${hours}"></td>
+						</tr>
+
+						<tr>
+							<td>Hourly rate</td>
+							<td>11.75 euro</td>
+						</tr>
+
+						<tr>
+							<td>Gross pay</td>
+							<td><span th:text="${grossWages}"></span> euro</td>
+						</tr>
+
+						<tr>
+							<td>Tax rate of</td>
+							<td>8%</td>
+						</tr>
+
+						<tr>
+							<td>Net pay</td>
+							<td><span th:text="${netWages}"></span> euro</td>
+						</tr>
+
+					</table>
+				</div>
 
 
-			<div class="row justify-content-center" id="dashboardBody"></div>
+			</div>
 
 			<div class="row justify-content-center" id="dashboardBody"></div>
 

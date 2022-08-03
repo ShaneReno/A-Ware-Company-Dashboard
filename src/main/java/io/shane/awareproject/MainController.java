@@ -15,6 +15,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,6 +60,8 @@ public class MainController {
 	EmployeeRepository employeeRepository;
 	@Autowired
 	RoleRepository roleRepository;
+	@Autowired
+	RosterRepository2 rosterRepository2;
 
 	@Autowired
 	private RosterService rosterService;
@@ -83,91 +87,112 @@ public class MainController {
 		return "employeeShiftSwap";
 	}
 
-	
-
 	@GetMapping("/employee-dashboard/employee-view-payslip")
-	public String employeeViewPayslip() {
-		return "employeeViewPayslip";
+	public String employeeViewPayslip(Model model) {
+		// RosterModel roster = rosterService.getEmployeeByemployeeId(id);
+		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
+
+		model.addAttribute("roster", roster);
+		// double wages = (roster.getEmployeeHours() * 11.75);
+		// model.addAttribute("wages", wages);#
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		for (int i = 0; i < roster.size(); i++) {
+			RosterModel roster2 = rosterService.getEmployeeByemployeeEmail(roster.get(i).getEmployeeEmail());
+			if (auth.getName().toString().equals(roster2.getEmployeeEmail())) {
+				model.addAttribute("weekNo", roster.get(i).getWeekNo());
+				model.addAttribute("hours", roster.get(i).getEmployeeHours());
+				double grossWages = (roster.get(i).getEmployeeHours() * 11.75);
+				grossWages = Math.round(grossWages*100); //Rounding to 2 decimals
+				grossWages = grossWages/100;
+				model.addAttribute("grossWages", grossWages);
+				
+				double netWages = grossWages * .92; //Calculating 'tax'
+				netWages = Math.round(netWages*100); //Rounding to 2 decimals
+				netWages = netWages/100;
+				model.addAttribute("netWages", netWages);
+				return "employeeViewPayslip";
+			}
+
+		}
+		System.out.println("Error occurred");
+		return "error";
+
 	}
 
 	@GetMapping("/employee-dashboard/employee-request-holidays")
 	public String employeeRequestHolidays() {
 		return "employeeRequestHolidays";
 	}
-	
+
 	@RequestMapping("/employee-dashboard/employee-view-weather")
 	public String employeeViewWeather(Model model) throws IOException, ParseException {
 		URL url;
 		try {
-			url = new URL ("http://dataservice.accuweather.com/currentconditions/v1/207931?apikey=brnuJdH3fQ0kG6Vz6cfgshueYWOdeXnb&details=true");
+			// Different API keys for when the calls have exceeded for the day - daily limit
+			// on free account
+			// url = new URL
+			// ("http://dataservice.accuweather.com/currentconditions/v1/207931?apikey=brnuJdH3fQ0kG6Vz6cfgshueYWOdeXnb&details=true");
+			url = new URL(
+					"http://dataservice.accuweather.com/currentconditions/v1/207931?apikey=KjwhD3BGkYQRYyKEp0j2Q3i3O4fHwg6o&details=true");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.connect();
 			int responseCode = connection.getResponseCode();
 
-			if(responseCode != 200) {
+			if (responseCode != 200) {
 				return "error503";
-				//throw new RuntimeException("HTTP Response code: " + responseCode);
-				
-			}
-			else {
+				// throw new RuntimeException("HTTP Response code: " + responseCode);
+
+			} else {
 				StringBuilder detailString = new StringBuilder();
 				Scanner scan = new Scanner(url.openStream());
-				
-				while(scan.hasNext()) {
+
+				while (scan.hasNext()) {
 					detailString.append(scan.nextLine());
-					
+
 				}
 				scan.close();
-				//System.out.println(detailString);
-				
+				// System.out.println(detailString);
+
 				JSONParser parser = new JSONParser();
 				JSONArray dataObject = (JSONArray) parser.parse(String.valueOf(detailString));
-				
-				//System.out.println(dataObject.get(0));
-				
-				//Navigating through JSONs
+
+				// System.out.println(dataObject.get(0));
+
+				// Navigating through JSONs
 				JSONObject dataCountry = (JSONObject) dataObject.get(0);
 				JSONObject dataCountry2 = (JSONObject) dataCountry.get("Temperature");
 				JSONObject dataCountry3 = (JSONObject) dataCountry2.get("Metric");
-				
+
 				JSONObject dataCountryWindSpeed = (JSONObject) dataCountry.get("Wind");
 				JSONObject dataCountryWindSpeed2 = (JSONObject) dataCountryWindSpeed.get("Speed");
 				JSONObject dataCountryWindSpeed3 = (JSONObject) dataCountryWindSpeed2.get("Metric");
-				//String weather = dataCountry3.get("Value");
-				
-				
-				//Strings for testing
-				//System.out.println("Temperature in Dublin is: " + dataCountry3.get("Value") + "C");
-				//System.out.println("Raining in Dublin: " + dataCountry.get("HasPrecipitation"));
+				// String weather = dataCountry3.get("Value");
+
+				// Strings for testing
+				// System.out.println("Temperature in Dublin is: " + dataCountry3.get("Value") +
+				// "C");
+				// System.out.println("Raining in Dublin: " +
+				// dataCountry.get("HasPrecipitation"));
 				model.addAttribute("weather", dataCountry3.get("Value"));
 				model.addAttribute("weatherRain", dataCountry.get("HasPrecipitation"));
 				model.addAttribute("weatherWindSpeed", dataCountryWindSpeed3.get("Value"));
-				
-				
-				//if it is raining in dublin, display rain picture. Vice versa for sun.
-				if(dataCountry.get("HasPrecipitation").toString() == "true") {
+
+				// if it is raining in dublin, display rain picture. Vice versa for sun.
+				if (dataCountry.get("HasPrecipitation").toString() == "true") {
 					model.addAttribute("image", "/images/rain.png");
-				}
-				else {
+				} else {
 					model.addAttribute("image", "/images/sun.png");
 				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			System.out.println("ERRORRRR");
+			System.out.println("ERROR");
 		}
-		
+
 		return "employeeViewWeather";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 	// Mapping for the manager user account
 	@GetMapping("/admin-dashboard")
@@ -266,11 +291,11 @@ public class MainController {
 
 	@GetMapping("/deleteEmployee/{id}")
 	public String deleteEmployee(@PathVariable(value = "id") String username) {
-		// delete method
-		if (username.toString() == "sreynolds") {
+		// delete method - if the account being deleted is the master account, do not delete
+		if (username.toString().equals("sreynolds")) {
 			System.out.println("Cannot delete the master account.");
-		}
-		else if(username.toString() != "sreynolds"){
+			return "masterAccountDeleteError";
+		} else {
 			this.employeeService.deleteEmployeeByUsername(username);
 		}
 

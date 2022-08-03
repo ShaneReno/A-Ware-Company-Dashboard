@@ -8,5 +8,6 @@ public interface RosterService {
 	List<RosterModel> getAllRosteredEmployees();
 	void saveRosteredEmployee(RosterModel rosterModel);
 	RosterModel getEmployeeByemployeeId(int id);
+	RosterModel getEmployeeByemployeeEmail(String email);
 	void deleteRosteredEmployeeById(int id);
 }

@@ -42,6 +42,7 @@
 									<th>Saturday</th>
 									<th>Sunday</th>
 									<th>Employee Department</th>
+									<th>Hours Worked</th>
 								</tr>
 							</thead>
 							<tr th:each="roster:${roster}">
@@ -57,6 +58,7 @@
 								<td th:text="${roster.satHours}"></td>
 								<td th:text="${roster.sunHours}"></td>
 								<td th:text="${roster.employeeDept}"></td>
+								<td th:text="${roster.employeeHours}"></td>
 								<td><a
 									th:href="@{/saveCreateEditRoster/{id}(id = ${roster.employeeId})}"
 									class="btn btn-primary">Update</a>

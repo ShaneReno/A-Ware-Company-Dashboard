@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import io.shane.awareproject.RosterRepository;
+import io.shane.awareproject.RosterRepository2;
 import io.shane.models.RosterModel;
 
 @Service
@@ -20,6 +21,9 @@ public class RosterServiceImpl implements RosterService {
 	
 	@Autowired
 	private RosterRepository rosterRepository;
+	
+	@Autowired
+	private RosterRepository2 rosterRepository2;
 	
 	//Displaying roster
 	@Override
@@ -52,6 +56,21 @@ public class RosterServiceImpl implements RosterService {
 	@Override
 	public void deleteRosteredEmployeeById(int id) {
 		this.rosterRepository.deleteById(id);
+	}
+
+	@Override
+	public RosterModel getEmployeeByemployeeEmail(String email) {
+		Optional<RosterModel> optional = rosterRepository2.findByemployeeEmail(email);
+		RosterModel roster = null;
+		
+		if(optional.isPresent()) {
+			roster = optional.get();
+		}
+		else {
+			throw new RuntimeException("Employee not found for email :: " + email);
+		}
+		return roster;
+	
 	}
 	
 	/*
