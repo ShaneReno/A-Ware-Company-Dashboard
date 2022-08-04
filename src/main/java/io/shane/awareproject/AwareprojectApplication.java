@@ -1,3 +1,7 @@
+//The AWARE Company dashboard web application project
+//by @author Shane Reynolds
+
+
 package io.shane.awareproject;
 
 import java.io.IOException;

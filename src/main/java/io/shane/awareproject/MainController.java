@@ -31,10 +31,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import io.shane.models.EmployeeModel;
 import io.shane.models.RoleModel;
 import io.shane.models.RosterModel;
+import io.shane.models.ShiftSwapModel;
 import io.shane.services.EmployeeServiceImpl;
 import io.shane.services.RoleService;
 import io.shane.services.RosterService;
 import io.shane.services.RosterServiceImpl;
+import io.shane.services.ShiftSwapService;
 
 @Controller
 public class MainController {
@@ -62,6 +64,8 @@ public class MainController {
 	RoleRepository roleRepository;
 	@Autowired
 	RosterRepository2 rosterRepository2;
+	@Autowired
+	ShiftSwapRepository shiftSwapRepository;
 
 	@Autowired
 	private RosterService rosterService;
@@ -69,6 +73,8 @@ public class MainController {
 	private EmployeeServiceImpl employeeService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private ShiftSwapService shiftSwapService;
 
 	@RequestMapping("/employee-dashboard/employee-roster")
 	public String getAll(Model model) {
@@ -78,12 +84,31 @@ public class MainController {
 	}
 
 	@GetMapping("/employee-dashboard")
-	public String employeeDashboard() {
+	public String employeeDashboard(Model model) {
+		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		boolean glowBool = false;
+		for(int i = 0; i < shiftSwap.size(); i++) {
+			if(auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())){
+				glowBool = true;
+				model.addAttribute("glowBool", glowBool);
+			}
+		}
 		return "employeeDashboard";
 	}
 
-	@GetMapping("/employee-dashboard/employee-request-shift-swap")
-	public String employeeRequestShiftSwap() {
+	@RequestMapping("/employee-dashboard/employee-request-shift-swap")
+	public String employeeRequestShiftSwap(Model model) {
+		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String youHaveARequest = "";
+		for(int i = 0; i < shiftSwap.size(); i++) {
+			if(auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())){
+				youHaveARequest = "You have a request to swap.";
+				model.addAttribute("youHaveARequest", youHaveARequest);
+			}
+		}
+		model.addAttribute("shiftSwap", shiftSwap);
 		return "employeeShiftSwap";
 	}
 
@@ -234,7 +259,9 @@ public class MainController {
 	@GetMapping("/admin-dashboard/admin-add-new-employee-hire-confirm-role")
 	public String addRole(Model model) {
 		RoleModel role = new RoleModel();
+		
 		model.addAttribute("role", role);
+		
 		return "adminAddNewEmployeeHireConfirmRole";
 	}
 
@@ -292,8 +319,21 @@ public class MainController {
 	@GetMapping("/updateEmployee/{id}")
 	public String updateEmployee(@PathVariable(value = "id") String username, Model model) {
 		// update method
+		
+		RoleModel person = this.roleService.getRoleByUsername(username);
+		
 		EmployeeModel employee = employeeService.getEmployeeByUsername(username);
 		model.addAttribute("employee", employee);
+		
+		//After user has been updated, if the user was an administrator with 'sreynolds' name,
+		//Set them always to admin. This is to disallow changing of the master account to a normal employee account.
+		//This will result in a total lockout of the admin dashboard.
+		if(username.toString().equals("sreynolds")) {
+			person.setAuthority("ROLE_ADMIN");
+			person.setUsername("sreynolds"); //Name is static.
+		}
+		
+		
 		return "adminFireEmployeeInfo";
 	}
 
@@ -306,6 +346,7 @@ public class MainController {
 		} else {
 			this.employeeService.deleteEmployeeByUsername(username);
 		}
+		
 
 		return "adminDashboard";
 	}

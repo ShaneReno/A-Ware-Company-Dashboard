@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Request a Shift Swap</title>
@@ -20,7 +20,32 @@
 			<div class="row justify-content-center" id="headerSpace"></div>
 
 
-			<div class="row justify-content-center" id="dashboardBody"></div>
+			<div class="row justify-content-center" id="dashboardBody">
+				<div class="col-sm-12" id="rosterTable">
+					<h2> <span th:text="${youHaveARequest}"></span></h2>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Request ID</th>
+								<th>Employee Email</th>
+								<th>Recipient Email</th>
+								<th>Swap Day</th>
+								<th>For Day</th>
+								<th>Accepted</th>
+							</tr>
+						</thead>
+						<tr th:each="shiftSwap:${shiftSwap}">
+							<td th:text="${shiftSwap.requestId}"></td>
+							<td th:text="${shiftSwap.employeeEmail}"></td>
+							<td th:text="${shiftSwap.recipientEmail}"></td>
+							<td th:text="${shiftSwap.swapDay}"></td>
+							<td th:text="${shiftSwap.forDay}"></td>
+							<td th:text="${shiftSwap.accepted}"></td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
 
 			<div class="row justify-content-center" id="dashboardBody"></div>
 

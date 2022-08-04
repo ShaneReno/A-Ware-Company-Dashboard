@@ -53,7 +53,7 @@ CREATE TABLE roster (employeeid int PRIMARY KEY, employeeemail varchar(60), empl
 
 #Week number 12 roster
 insert into roster values (0, 'wandapatel@yahoo.ie', 'Wanda Patel', 12, 'OFF', 'OFF', 'OFF', '8-5', '9-6', '2-7', '3-9', 'Clothing', 29);
-insert into roster values (1, 'jimothy@hotmail.com', 'Jim Othy', 12, '9-5', '1-10', 'OFF', '8-5', '9-6', '1-10', '3-9', 'Clothing', 50);
+insert into roster values (1, 'ncraigie0@ezinearticles.com', 'Nina Craigie', 12, '9-5', 'OFF', '1-10', '8-5', '9-6', '1-10', '3-9', 'Clothing', 50);
 insert into roster values (2, 'ffranciskiewicz1@cnet.com', 'Flory Franciskiewicz', 12, 'OFF', '9-5', 'OFF', '8-5', '9-6', '1-10', '3-9', 'Beauty', 41);
 insert into roster values (3, 'ilythgoe2@marriott.com', 'Ivory Lythgoe', 12, 'OFF', '9-5', '1-10', '8-5', '9-6', '1-10', '3-9', 'Electronics', 50);
 insert into roster values (4, 'gwimlet3@oracle.com', 'Godiva Wimlet', 12, '1-10', '9-5', '1-10', '8-5', '9-6', 'OFF', '3-9', 'Health', 50);
@@ -65,4 +65,11 @@ insert into roster values (9, 'bskillington8@nps.gov', 'Brandice Skillington', 1
 insert into roster values (10, 'gsimla9@w3.org', 'Garry Simla', 12, '9-5', '1-10', 'OFF', '8-5', '9-6', 'OFF', '3-9', 'Jewelry', 41);
 insert into roster values (11, 'gsperwella@yelp.com', 'Gregory Sperwell', 12, '1-10', '9-5', '1-10', '8-5', '9-6', '9-5', '3-9', 'Baby', 58);
 insert into roster values (12, 'kmackellerb@stanford.edu', 'Keslie MacKeller', 12, 'OFF', '1-10', 'OFF', '8-5', '9-6', '1-10', '3-9', 'Grocery', 42);
+
+
+DROP TABLE if EXISTS shiftswaps;
+CREATE TABLE shiftswaps (requestid int PRIMARY KEY, employeeemail varchar(60), recipientemail varchar(60), swapday varchar(20), forday varchar(20), accepted boolean);
+insert into shiftswaps values (1, 'kmackellerb@stanford.edu', 'ncraigie0@ezinearticles.com', 'Tuesday', 'Wednesday', false);
+
+
 

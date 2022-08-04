@@ -41,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/admin-dashboard/admin-fire-employee").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/deleteEmployee").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-add-employee-to-roster").hasRole("ADMIN")
+			.antMatchers("/admin-dashboard/admin-add-new-employee-hire-confirm-role").hasRole("ADMIN")
 			
 			///Employee users authorisation for pages
 			.antMatchers("/employee-dashboard").hasRole("USER")
