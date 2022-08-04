@@ -28,7 +28,7 @@
 
 				
 					
-					<form th:action="@{/saveEmployeeRecord}" th:object="${employee}" method="post">
+					<form th:action="@{/employee-dashboard/save-employee-record/{id}}" th:object="${employee}" method="post">
 					<input type="hidden" th:field = "*{username}" />
 						<table class="table table-striped">
 							

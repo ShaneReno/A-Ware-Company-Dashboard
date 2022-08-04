@@ -17,12 +17,13 @@
 			<div align="center" class="col-sm-12" id="rosterHeader">
 				<h1>Request a Shift Swap</h1>
 			</div>
-			<div class="row justify-content-center" id="headerSpace"></div>
-
 
 			<div class="row justify-content-center" id="dashboardBody">
 				<div class="col-sm-12" id="rosterTable">
-					<h2> <span th:text="${youHaveARequest}"></span></h2>
+					<h2 id = "signedInText"><span th:text="${#authentication.getPrincipal().getUsername()}"></span>,</h2>
+					<h2>
+						<span th:text="${youHaveARequest}" > </span>
+					</h2>
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -47,7 +48,27 @@
 				</div>
 			</div>
 
-			<div class="row justify-content-center" id="dashboardBody"></div>
+			<hr>
+
+			
+			
+			<div class="row justify-content-center" id="dashboardBody">
+				<div class="col-sm-4">
+					<h2>
+						<a href="/employee-dashboard/employee-shift-swap-request"><button
+								type="button" class="dashboardButtons">Make a Shift Swap Request</button></a>
+					</h2>
+				</div>
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4">
+					<h2>
+							<a href="/employee-dashboard/employee-shift-swap-answer"><button
+									type="button" class="dashboardButtons">Respond to Shift Swap Request</button></a>
+						</h2>
+				</div>
+
+			</div>
+
 
 
 

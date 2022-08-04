@@ -104,13 +104,35 @@ public class MainController {
 		String youHaveARequest = "";
 		for(int i = 0; i < shiftSwap.size(); i++) {
 			if(auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())){
-				youHaveARequest = "You have a request to swap.";
+				youHaveARequest = "You have a request to swap";
 				model.addAttribute("youHaveARequest", youHaveARequest);
 			}
 		}
 		model.addAttribute("shiftSwap", shiftSwap);
 		return "employeeShiftSwap";
 	}
+	
+	@RequestMapping("/employee-dashboard/employee-shift-swap-request")
+	public String getShiftSwapAnswer(Model model) {
+		ShiftSwapModel shiftSwapModel = new ShiftSwapModel();
+		model.addAttribute("shiftSwapModel", shiftSwapModel);
+		List<ShiftSwapModel> shiftSwapList = shiftSwapService.getAllShiftSwapRequests();
+		model.addAttribute("shiftSwapList", shiftSwapList);
+		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
+		model.addAttribute("roster", roster);
+		return "employeeShiftSwapRequest";
+	}
+	
+	@PostMapping("/employee-dashboard/employee-shift-swap-request-sent")
+	public String saveShiftSwapRequest(@ModelAttribute("shiftSwapModel") ShiftSwapModel model) {
+		shiftSwapService.saveShiftSwapRequest(model);
+		return "redirect:/employee-dashboard";
+	}
+	
+
+
+	
+	
 
 	@GetMapping("/employee-dashboard/employee-view-payslip")
 	public String employeeViewPayslip(Model model) {
@@ -237,7 +259,7 @@ public class MainController {
 	}
 
 
-	@PostMapping("/saveRosteredEmployee")
+	@PostMapping("/employee-dashboard/save-rostered-employee")
 	public String saveRosteredEmployee(@ModelAttribute("roster") RosterModel roster) {
 		rosterService.saveRosteredEmployee(roster);
 		return "redirect:/admin-dashboard";
@@ -266,7 +288,7 @@ public class MainController {
 	}
 
 	// Setting the credentials of new registered employee
-	@PostMapping("/saveEmployeeHire")
+	@PostMapping("/employee-dashboard/save-employee-hire")
 	public String saveEmployeeHire(@ModelAttribute("employee") EmployeeModel employee) {
 		employeeService.saveEmployeeHire(employee);
 		return "redirect:/admin-dashboard/admin-add-new-employee-hire-confirm-role";
@@ -276,7 +298,7 @@ public class MainController {
 	
 
 	// Setting the role authority of new registered employee
-	@PostMapping("/saveRoleHire")
+	@PostMapping("/employee-dashboard/save-role-hire")
 	public String saveRoleHire(@ModelAttribute("role") RoleModel role) {
 		roleService.saveRole(role);
 		return "redirect:/admin-dashboard";
@@ -292,7 +314,7 @@ public class MainController {
 		return "adminCreateEditRoster";
 	}
 
-	@GetMapping("/saveCreateEditRoster/{id}")
+	@GetMapping("/employee-dashboard/save-create-edit-roster/{id}")
 	public String saveCreateEditRoster(@PathVariable(value = "id") int id, Model model) {
 		// update method
 		RosterModel roster = rosterService.getEmployeeByemployeeId(id);
@@ -300,7 +322,7 @@ public class MainController {
 		return "adminCreateEditRosterInfo";
 	}
 
-	@GetMapping("/deleteCreateEditRoster/{id}")
+	@GetMapping("/employee-dashboard/delete-rostered-employee/{id}")
 	public String deleteRosteredEmployee(@PathVariable(value = "id") int id) {
 		// delete method
 		this.rosterService.deleteRosteredEmployeeById(id);
@@ -316,7 +338,7 @@ public class MainController {
 		return "adminFireEmployee";
 	}
 
-	@GetMapping("/updateEmployee/{id}")
+	@GetMapping("/employee-dashboard/update-employee/{id}")
 	public String updateEmployee(@PathVariable(value = "id") String username, Model model) {
 		// update method
 		
@@ -337,7 +359,7 @@ public class MainController {
 		return "adminFireEmployeeInfo";
 	}
 
-	@GetMapping("/deleteEmployee/{id}")
+	@GetMapping("/employee-dashboard/delete-employee/{id}")
 	public String deleteEmployee(@PathVariable(value = "id") String username) {
 		// delete method - if the account being deleted is the master account, do not delete
 		if (username.toString().equals("sreynolds")) {
@@ -351,7 +373,7 @@ public class MainController {
 		return "adminDashboard";
 	}
 
-	@PostMapping("/saveEmployeeRecord")
+	@PostMapping("/employee-dashboard/save-employee-record/{id}")
 	public String saveEmployeeRecord(@ModelAttribute("employee") EmployeeModel employee) {
 		// As the username dupliates in the string due to it being a string primary key,
 		// the returned username must be split by comma

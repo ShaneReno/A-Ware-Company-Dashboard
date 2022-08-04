@@ -60,10 +60,10 @@
 								<td th:text="${roster.employeeDept}"></td>
 								<td th:text="${roster.employeeHours}"></td>
 								<td><a
-									th:href="@{/saveCreateEditRoster/{id}(id = ${roster.employeeId})}"
+									th:href="@{/employee-dashboard/save-create-edit-roster/{id}(id = ${roster.employeeId})}"
 									class="btn btn-primary">Update</a>
 									<a
-									th:href="@{/deleteCreateEditRoster/{id}(id = ${roster.employeeId})}"
+									th:href="@{/employee-dashboard/delete-rostered-employee/{id}(id = ${roster.employeeId})}"
 									class="btn btn-danger">Delete</a>
 								</td>
 							</tr>

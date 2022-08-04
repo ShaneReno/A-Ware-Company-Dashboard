@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class ShiftSwapModel {
 	
 	//Mapping the table columns to variables
-	@GeneratedValue(generator = "merge_id_seq", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "merge_id_seq2", strategy = GenerationType.AUTO)
 	@Id
 	@Column(name = "requestid")
 	int requestId;

@@ -40,10 +40,10 @@
 							<td th:text="${employee.password}"></td>
 							<td th:text="${employee.enabled}"></td>
 							<td><a
-									th:href="@{/updateEmployee/{id}(id = ${employee.username})}"
+									th:href="@{/employee-dashboard/update-employee/{id}(id = ${employee.username})}"
 									class="btn btn-primary">Update</a>
 									<a
-									th:href="@{/deleteEmployee/{id}(id = ${employee.username})}"
+									th:href="@{/employee-dashboard/delete-employee/{id}(id = ${employee.username})}"
 									class="btn btn-danger">Delete</a>
 								</td>
 						</tr>
