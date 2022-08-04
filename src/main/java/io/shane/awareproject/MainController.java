@@ -203,9 +203,14 @@ public class MainController {
 	@GetMapping("/admin-dashboard/admin-add-employee-to-roster")
 	public String createRoster(Model model) {
 		RosterModel roster = new RosterModel();
+		
+		List<EmployeeModel> employeeList = employeeService.getAllEmployees();
+		System.out.println(employeeList);
 		model.addAttribute("roster", roster);
+		model.addAttribute("employeeList", employeeList);
 		return "adminAddEmployeeToRoster";
 	}
+
 
 	@PostMapping("/saveRosteredEmployee")
 	public String saveRosteredEmployee(@ModelAttribute("roster") RosterModel roster) {
@@ -239,6 +244,9 @@ public class MainController {
 		employeeService.saveEmployeeHire(employee);
 		return "redirect:/admin-dashboard/admin-add-new-employee-hire-confirm-role";
 	}
+	
+	
+	
 
 	// Setting the role authority of new registered employee
 	@PostMapping("/saveRoleHire")
