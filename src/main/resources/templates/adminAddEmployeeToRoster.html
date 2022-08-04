@@ -24,64 +24,79 @@
 				<div align="center" class="col-sm-3"></div>
 				<div align="center" class="col-sm-8">
 
-					<form th:action="@{/saveRosteredEmployee}"  method="post">
+					<form th:action="@{/saveRosteredEmployee}" method="post" id="rosterform">
 						<table class="table table-striped">
 							<thead>
 								<tr>
 									
 									<th class="customTH"><label>Enter Employee Email: </label></th>
 
-									<th class="customTH"><select th:field = "${employeeList}" name="username" id="username">
+									<th class="customTH">
+										<select th:field = "${roster.employeeEmail}" name="employeeEmail" form="rosterform" required='required'>
     										<option th:each="employeeList:${employeeList}"
     												th:value="${employeeList.username}"
     												th:text="${employeeList.username}"></option>
-    										
   										</select>
   									</th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Employee Name: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.employeeName}" name="employeeName"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.employeeName}" name="employeeName" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Week Number: </label></th>
-									<th class="customTH"><input type="number" min="1" max="52" th:field = "${roster.weekNo}" name="weekNo"></th>
+									<th class="customTH"><input type="number" min="1" max="52" th:field = "${roster.weekNo}" name="weekNo" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Monday Hours: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.monHours}" name="monHours"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.monHours}" name="monHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Tuesday Hours: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.tuesHours}" name="tuesHours"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.tuesHours}" name="tuesHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Wednesday Hours: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.wedHours}" name="wedHours"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.wedHours}" name="wedHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Thursday Hours: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.thursHours}" name="thursHours"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.thursHours}" name="thursHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Friday Hours: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.friHours}" name="friHours"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.friHours}" name="friHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Saturday Hours: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.satHours}" name="satHours"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.satHours}" name="satHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Sunday Hours: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.sunHours}" name="sunHours"></th>
+									<th class="customTH"><input type="text" th:field = "${roster.sunHours}" name="sunHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Employee Department: </label></th>
-									<th class="customTH"><input type="text" th:field = "${roster.employeeDept}" name="employeeDept"></th>
+									<th class="customTH"><select th:field = "${roster.employeeDept}" name="employeeDept" id="employeeDept" required='required'>
+    										<option value="Grocery">Grocery</option>
+    										<option value="Checkouts">Checkouts</option>
+    										<option value="Office">Office</option>
+    										<option value="Baby">Baby</option>
+    										<option value="Jewelry">Jewelry</option>
+    										<option value="Home">Home</option>
+    										<option value="Books">Books</option>
+    										<option value="Health">Health</option>
+    										<option value="Electronics">Electronics</option>
+    										<option value="Bakery">Bakery</option>
+    										<option value="Butchers">Butchers</option>
+    										<option value="Fish Counter">Fish Counter</option>
+    										<option value="Off License">Off License</option>
+  										</select>
+  									</th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Employee Hours Worked: </label></th>
-									<th class="customTH"><input type="number" min="1" max="60" th:field = "${roster.employeeHours}" name="employeeHours"></th>
+									<th class="customTH"><input type="number" min="1" max="60" th:field = "${roster.employeeHours}" name="employeeHours" required='required'></th>
 								</tr>
 								<tr>
 									<th class="customTH"> </th>
