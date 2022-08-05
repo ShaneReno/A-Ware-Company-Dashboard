@@ -28,6 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception{
 			http.authorizeRequests()
+			.antMatchers( "/favicon.ico").permitAll() //favicon image
 			//Admin users authorisation for pages
 			.antMatchers("/admin-dashboard").hasRole("ADMIN")
 			.antMatchers("/admin-dashboard/admin-view-all-employees").hasRole("ADMIN")

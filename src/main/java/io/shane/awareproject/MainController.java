@@ -77,6 +77,12 @@ public class MainController {
 	private RoleService roleService;
 	@Autowired
 	private ShiftSwapService shiftSwapService;
+	
+	
+	@RequestMapping("favicon.ico")
+    String favicon() {
+    return "forward:/favicon.ico";
+}
 
 	@RequestMapping("/employee-dashboard/employee-roster")
 	public String getAll(Model model) {
