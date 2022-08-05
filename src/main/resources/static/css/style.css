@@ -90,6 +90,10 @@ h3{
 }
 
 
+#employeeEmailSpan{
+	color: rgba(255,0,0,0.4);
+}
+
 #signedInText{
 	color: green;
 }

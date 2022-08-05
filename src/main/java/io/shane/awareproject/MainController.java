@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -88,8 +89,8 @@ public class MainController {
 		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		boolean glowBool = false;
-		for(int i = 0; i < shiftSwap.size(); i++) {
-			if(auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())){
+		for (int i = 0; i < shiftSwap.size(); i++) {
+			if (auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())) {
 				glowBool = true;
 				model.addAttribute("glowBool", glowBool);
 			}
@@ -102,8 +103,8 @@ public class MainController {
 		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String youHaveARequest = "";
-		for(int i = 0; i < shiftSwap.size(); i++) {
-			if(auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())){
+		for (int i = 0; i < shiftSwap.size(); i++) {
+			if (auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())) {
 				youHaveARequest = "You have a request to swap";
 				model.addAttribute("youHaveARequest", youHaveARequest);
 			}
@@ -111,9 +112,9 @@ public class MainController {
 		model.addAttribute("shiftSwap", shiftSwap);
 		return "employeeShiftSwap";
 	}
-	
+
 	@RequestMapping("/employee-dashboard/employee-shift-swap-request")
-	public String getShiftSwapAnswer(Model model) {
+	public String getShiftSwapRequest(Model model) {
 		ShiftSwapModel shiftSwapModel = new ShiftSwapModel();
 		model.addAttribute("shiftSwapModel", shiftSwapModel);
 		List<ShiftSwapModel> shiftSwapList = shiftSwapService.getAllShiftSwapRequests();
@@ -122,17 +123,109 @@ public class MainController {
 		model.addAttribute("roster", roster);
 		return "employeeShiftSwapRequest";
 	}
-	
+
 	@PostMapping("/employee-dashboard/employee-shift-swap-request-sent")
 	public String saveShiftSwapRequest(@ModelAttribute("shiftSwapModel") ShiftSwapModel model) {
 		shiftSwapService.saveShiftSwapRequest(model);
 		return "redirect:/employee-dashboard";
 	}
-	
 
+	@RequestMapping("/employee-dashboard/employee-shift-swap-response")
+	public String employeeRequestShiftSwapResponse(Model model) {
+		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
+		List<ShiftSwapModel> shiftSwapInstance = new ArrayList<ShiftSwapModel>();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String employeeEmails = "";
+		for (int i = 0; i < shiftSwap.size(); i++) {
+			if (auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())) {
+				shiftSwapInstance.add(shiftSwap.get(i));
+				model.addAttribute("shiftSwapInstance", shiftSwapInstance);
+				employeeEmails += shiftSwapInstance.get(i).getEmployeeEmail() + ", ";
+				model.addAttribute("employeeEmails", employeeEmails);
+			}
+		}
 
-	
-	
+		return "employeeShiftSwapResponse";
+	}
+
+	@GetMapping("/employee-dashboard/accept-shift-swap-request/{id}")
+	public String accecptShiftSwapRequest(@PathVariable(value = "id") int id, Model model) {
+		// update method
+		ShiftSwapModel shiftSwapInstance = shiftSwapService.getShiftSwapRequestById(id);
+		shiftSwapInstance.setAccepted(true);
+		model.addAttribute("shiftSwapInstance", shiftSwapInstance);
+		System.out.println("Here1");
+		// Swapping around the instance variables so that the shift swap can be
+		// reflected on the roster:
+		shiftSwapService.saveShiftSwapRequest(shiftSwapInstance);
+		/*
+		String swapping1 = shiftSwapInstance.getEmployeeEmail();
+		String swapping2 = shiftSwapInstance.getRecipientEmail();
+		String tempSwap = swapping1;
+		swapping1 = swapping2;
+		swapping2 = tempSwap;
+
+		String swappingDay1 = shiftSwapInstance.getSwapDay();
+		String swappingDay2 = shiftSwapInstance.getForDay();
+		String tempSwapDay = swappingDay1;
+		swappingDay1 = swappingDay2;
+		swappingDay2 = tempSwapDay;
+		
+
+		System.out.println("swapping1: " + swapping1);
+		System.out.println("swapping2: " + swapping2);
+
+		System.out.println("swapday1: " + swappingDay1);
+		System.out.println("swapday2: " + swappingDay2);
+		*/
+
+		RosterModel person1 = this.rosterService.getEmployeeByemployeeEmail(shiftSwapInstance.getEmployeeEmail());
+		
+		RosterModel person2 = this.rosterService.getEmployeeByemployeeEmail(shiftSwapInstance.getRecipientEmail());
+		
+		System.out.println("person1: " + person1);
+		System.out.println("person2: " + person2);
+		System.out.println(shiftSwapInstance.getEmployeeEmail().toString());
+		System.out.println(shiftSwapInstance.getRecipientEmail().toString());
+		
+		if (shiftSwapInstance.getSwapDay().toString().equals("Monday")) {
+			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
+				System.out.println("SWAP COMPLETED");
+				String tempHours = person1.getMonHours();
+				person1.setMonHours(person2.getMonHours());
+				person2.setMonHours(tempHours);
+			}
+			else if (person2.toString().equals("Tuesday")) {
+				person1.setMonHours(person2.getTuesHours());
+			}
+
+		} else if (person1.toString().equals("Tuesday")) {
+
+		} else if (person1.toString().equals("Wednesday")) {
+
+		} else if (person1.toString().equals("Thursday")) {
+
+		} else if (person1.toString().equals("Friday")) {
+
+		} else if (person1.toString().equals("Saturday")) {
+
+		} else if (person1.toString().equals("Sunday")) {
+
+		}
+
+		model.addAttribute("person1", person1);
+		model.addAttribute("person2", person2);
+		shiftSwapService.deleteShiftSwapRequestById(id);
+		return "employeeDashboard";
+	}
+
+	/*
+	 * @PostMapping("/employee-dashboard/accept-shift-swap-request2/{id}") public
+	 * String saveAccecptShiftSwapRequest(@ModelAttribute("shiftSwapInstance")
+	 * ShiftSwapModel shiftSwapInstance) { shiftSwapInstance.setAccepted(true);
+	 * shiftSwapService.saveShiftSwapRequest(shiftSwapInstance);
+	 * System.out.println("Here2"); return "redirect:/employee-dashboard"; }
+	 */
 
 	@GetMapping("/employee-dashboard/employee-view-payslip")
 	public String employeeViewPayslip(Model model) {
@@ -150,13 +243,13 @@ public class MainController {
 				model.addAttribute("weekNo", roster.get(i).getWeekNo());
 				model.addAttribute("hours", roster.get(i).getEmployeeHours());
 				double grossWages = (roster.get(i).getEmployeeHours() * 11.75);
-				grossWages = Math.round(grossWages*100); //Rounding to 2 decimals
-				grossWages = grossWages/100;
+				grossWages = Math.round(grossWages * 100); // Rounding to 2 decimals
+				grossWages = grossWages / 100;
 				model.addAttribute("grossWages", grossWages);
-				
-				double netWages = grossWages * .92; //Calculating 'tax'
-				netWages = Math.round(netWages*100); //Rounding to 2 decimals
-				netWages = netWages/100;
+
+				double netWages = grossWages * .92; // Calculating 'tax'
+				netWages = Math.round(netWages * 100); // Rounding to 2 decimals
+				netWages = netWages / 100;
 				model.addAttribute("netWages", netWages);
 				return "employeeViewPayslip";
 			}
@@ -250,7 +343,7 @@ public class MainController {
 	@GetMapping("/admin-dashboard/admin-add-employee-to-roster")
 	public String createRoster(Model model) {
 		RosterModel roster = new RosterModel();
-		
+
 		List<EmployeeModel> employeeList = employeeService.getAllEmployees();
 		System.out.println(employeeList);
 		model.addAttribute("roster", roster);
@@ -258,14 +351,13 @@ public class MainController {
 		return "adminAddEmployeeToRoster";
 	}
 
-
 	@PostMapping("/employee-dashboard/save-rostered-employee")
 	public String saveRosteredEmployee(@ModelAttribute("roster") RosterModel roster) {
 		rosterService.saveRosteredEmployee(roster);
 		return "redirect:/admin-dashboard";
 	}
 
-	@PostMapping("/saveRosteredEmployee2")
+	@PostMapping("/employee-dashboard/save-rostered-employee-2")
 	public String saveRosteredEmployee2(@ModelAttribute("roster") RosterModel roster) {
 		rosterService.saveRosteredEmployee(roster);
 		return "redirect:/admin-dashboard/admin-view-create-roster";
@@ -281,9 +373,9 @@ public class MainController {
 	@GetMapping("/admin-dashboard/admin-add-new-employee-hire-confirm-role")
 	public String addRole(Model model) {
 		RoleModel role = new RoleModel();
-		
+
 		model.addAttribute("role", role);
-		
+
 		return "adminAddNewEmployeeHireConfirmRole";
 	}
 
@@ -293,9 +385,6 @@ public class MainController {
 		employeeService.saveEmployeeHire(employee);
 		return "redirect:/admin-dashboard/admin-add-new-employee-hire-confirm-role";
 	}
-	
-	
-	
 
 	// Setting the role authority of new registered employee
 	@PostMapping("/employee-dashboard/save-role-hire")
@@ -341,34 +430,35 @@ public class MainController {
 	@GetMapping("/employee-dashboard/update-employee/{id}")
 	public String updateEmployee(@PathVariable(value = "id") String username, Model model) {
 		// update method
-		
+
 		RoleModel person = this.roleService.getRoleByUsername(username);
-		
+
 		EmployeeModel employee = employeeService.getEmployeeByUsername(username);
 		model.addAttribute("employee", employee);
-		
-		//After user has been updated, if the user was an administrator with 'sreynolds' name,
-		//Set them always to admin. This is to disallow changing of the master account to a normal employee account.
-		//This will result in a total lockout of the admin dashboard.
-		if(username.toString().equals("sreynolds")) {
+
+		// After user has been updated, if the user was an administrator with
+		// 'sreynolds' name,
+		// Set them always to admin. This is to disallow changing of the master account
+		// to a normal employee account.
+		// This will result in a total lockout of the admin dashboard.
+		if (username.toString().equals("sreynolds")) {
 			person.setAuthority("ROLE_ADMIN");
-			person.setUsername("sreynolds"); //Name is static.
+			person.setUsername("sreynolds"); // Name is static.
 		}
-		
-		
+
 		return "adminFireEmployeeInfo";
 	}
 
 	@GetMapping("/employee-dashboard/delete-employee/{id}")
 	public String deleteEmployee(@PathVariable(value = "id") String username) {
-		// delete method - if the account being deleted is the master account, do not delete
+		// delete method - if the account being deleted is the master account, do not
+		// delete
 		if (username.toString().equals("sreynolds")) {
 			System.out.println("Cannot delete the master account.");
 			return "masterAccountDeleteError";
 		} else {
 			this.employeeService.deleteEmployeeByUsername(username);
 		}
-		
 
 		return "adminDashboard";
 	}

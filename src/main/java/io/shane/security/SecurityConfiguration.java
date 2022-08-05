@@ -53,6 +53,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/employee-dashboard/employee-shift-swap-answer").hasRole("USER")
 			.antMatchers("/employee-dashboard/employee-request-shift-swap").hasRole("USER")
 			.antMatchers("/employee-dashboard/save-employee-record").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-request-shift-swap-response").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-shift-swap-response").hasRole("USER")
 			.antMatchers("/").permitAll()
 			.and().formLogin().defaultSuccessUrl("/default");
 		}

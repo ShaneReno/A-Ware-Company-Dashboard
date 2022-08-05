@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Request a Shift Swap</title>
+<title>Responding to a Shift Swap</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -15,61 +15,50 @@
 	<div class="container-fluid" id="wholePage">
 		<div class="row justify-content-center">
 			<div align="center" class="col-sm-12" id="rosterHeader">
-				<h1>Request a Shift Swap</h1>
+				<h1>Responding to a Shift Swap</h1>
 			</div>
+			<div class="row justify-content-center" id="headerSpace"></div>
+
 
 			<div class="row justify-content-center" id="dashboardBody">
 				<div class="col-sm-12" id="rosterTable">
 					<h2 id = "signedInText"><span th:text="${#authentication.getPrincipal().getUsername()}"></span>,</h2>
-					<h2>
-						<span th:text="${youHaveARequest}" > </span>
-					</h2>
+					<h3>
+						Employee(s) <span id="employeeEmailSpan" th:text="${employeeEmails}" > </span> would like to swap:
+					</h3>
 					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th>Request ID</th>
-								<th>Employee Email</th>
+								<th>Requesting Employee Email</th>
 								<th>Recipient Email</th>
 								<th>Swap Day</th>
 								<th>For Day</th>
-								<th>Accepted</th>
+								<th>Accepted</th> 
 							</tr>
 						</thead>
-						<tr th:each="shiftSwap:${shiftSwap}">
-							<td th:text="${shiftSwap.requestId}"></td>
-							<td th:text="${shiftSwap.employeeEmail}"></td>
-							<td th:text="${shiftSwap.recipientEmail}"></td>
-							<td th:text="${shiftSwap.swapDay}"></td>
-							<td th:text="${shiftSwap.forDay}"></td>
-							<td th:text="${shiftSwap.accepted}"></td>
+						<tr th:each="shiftSwapInstance:${shiftSwapInstance}">
+							<td th:text="${shiftSwapInstance.requestId}"></td>
+							<td th:text="${shiftSwapInstance.employeeEmail}"></td>
+							<td th:text="${shiftSwapInstance.recipientEmail}"></td>
+							<td th:text="${shiftSwapInstance.swapDay}"></td>
+							<td th:text="${shiftSwapInstance.forDay}"></td>
+							<td th:text="${shiftSwapInstance.accepted}"></td>
+							<td><a
+									th:href="@{/employee-dashboard/accept-shift-swap-request/{id}(id = ${shiftSwapInstance.requestId})}"
+									class="btn btn-primary">Accept</a>
+									 <!--
+									<a
+									th:href="@{/employee-dashboard/deny-shift-swap-request/{id}(id = $shiftSwapModel.requestId})}"
+									class="btn btn-danger">Deny</a>
+									-->
+								</td>
 						</tr>
 					</table>
 
 				</div>
 			</div>
-
-			<hr>
-
-			
-			
-			<div class="row justify-content-center" id="dashboardBody">
-				<div class="col-sm-4">
-					<h2>
-						<a href="/employee-dashboard/employee-shift-swap-request"><button
-								type="button" class="dashboardButtons">Make a Shift Swap Request</button></a>
-					</h2>
-				</div>
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4">
-					<h2>
-							<a href="/employee-dashboard/employee-shift-swap-response"><button
-									type="button" class="dashboardButtons">Respond to Shift Swap Request</button></a>
-						</h2>
-				</div>
-
 			</div>
-
-
 
 
 			<div class="row justify-content-center" id="footerSpace">
