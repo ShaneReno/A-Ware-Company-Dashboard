@@ -21,15 +21,15 @@
 				<div align="center" class="col-sm-6" id="rosterTable">
 
 					<h2>
-						Holiday Hours Accrued For <span
+						Holiday Hours Accrued For <span id = "signedInText"
 							th:text="${#authentication.getPrincipal().getUsername()}"></span>
 					</h2>
 					<hr>
 
 					<table class="table table-striped">
 						<tr>
-							<td>You have accrued:</td>
-							<td th:text="${hoursAccrued}"></td>
+							<td>This week you have accrued:</td>
+							<td><span th:text="${hoursAccrued}"></span> hours</td>
 						</tr>
 					</table>
 				</div>

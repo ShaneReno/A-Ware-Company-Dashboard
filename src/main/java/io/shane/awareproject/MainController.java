@@ -3,7 +3,6 @@ package io.shane.awareproject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -21,14 +20,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import io.shane.models.EmployeeModel;
 import io.shane.models.RoleModel;
@@ -37,7 +34,6 @@ import io.shane.models.ShiftSwapModel;
 import io.shane.services.EmployeeServiceImpl;
 import io.shane.services.RoleService;
 import io.shane.services.RosterService;
-import io.shane.services.RosterServiceImpl;
 import io.shane.services.ShiftSwapService;
 
 @Controller
@@ -624,8 +620,8 @@ public class MainController {
 
 	}
 
-	@RequestMapping("/employee-dashboard/employee-request-holidays")
-	public String employeeRequestHolidays(Model model) {
+	@RequestMapping("/employee-dashboard/employee-holidays")
+	public String employeeHolidays(Model model) {
 		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
 		model.addAttribute("roster", roster);
 		
@@ -638,7 +634,7 @@ public class MainController {
 				hoursAccrued = Math.round(hoursAccrued * 100); //Calculating the amount of holiday hours gained this week, rounding to 2 decimals
 				hoursAccrued = hoursAccrued / 100;
 				model.addAttribute("hoursAccrued", hoursAccrued);
-				return "employeeRequestHolidays";
+				return "employeeHolidays";
 			}
 		}
 		

@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -47,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			///Employee users authorisation for pages
 			.antMatchers("/employee-dashboard").hasRole("USER")
 			.antMatchers("/employee-dashboard/employee-roster").hasRole("USER")
-			.antMatchers("/employee-dashboard/employee-request-holidays").hasRole("USER")
+			.antMatchers("/employee-dashboard/employee-holidays").hasRole("USER")
 			.antMatchers("/employee-dashboard/employee-request-shift-swap").hasRole("USER")
 			.antMatchers("/employee-dashboard/employee-view-weather").hasRole("USER")
 			.antMatchers("/employee-dashboard/employee-view-payslip").hasRole("USER")
