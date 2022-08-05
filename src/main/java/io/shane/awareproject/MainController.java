@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -130,23 +131,37 @@ public class MainController {
 		return "redirect:/employee-dashboard";
 	}
 
+	//List<ShiftSwapModel> shiftSwapInstance = new ArrayList<ShiftSwapModel>();
+	LinkedHashSet<ShiftSwapModel> shiftSwapInstance = new LinkedHashSet<ShiftSwapModel>();
 	@RequestMapping("/employee-dashboard/employee-shift-swap-response")
 	public String employeeRequestShiftSwapResponse(Model model) {
-		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
-		List<ShiftSwapModel> shiftSwapInstance = new ArrayList<ShiftSwapModel>();
+		List<ShiftSwapModel> shiftSwap2 = shiftSwapService.getAllShiftSwapRequests();
+		
+		List<ShiftSwapModel> shiftSwap = new ArrayList<ShiftSwapModel>(shiftSwap2);
+		
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String employeeEmails = "";
+
 		for (int i = 0; i < shiftSwap.size(); i++) {
 			if (auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())) {
 				shiftSwapInstance.add(shiftSwap.get(i));
-				model.addAttribute("shiftSwapInstance", shiftSwapInstance);
-				employeeEmails += shiftSwapInstance.get(i).getEmployeeEmail() + ", ";
+				model.addAttribute("shiftSwapInstance", shiftSwap);
+
+				employeeEmails += shiftSwap.get(i).getEmployeeEmail() + ", ";
 				model.addAttribute("employeeEmails", employeeEmails);
 			}
 		}
+		
+		//Debug 
+		//System.out.println("Total Shift Swap Requests: " + shiftSwap.size());
+		//System.out.println("Shift Swap for this user: " + shiftSwapInstance.size());
 
 		return "employeeShiftSwapResponse";
 	}
+	
+	
+	
 
 	@GetMapping("/employee-dashboard/accept-shift-swap-request/{id}")
 	public String accecptShiftSwapRequest(@PathVariable(value = "id") int id, Model model) {
@@ -159,62 +174,403 @@ public class MainController {
 		// reflected on the roster:
 		shiftSwapService.saveShiftSwapRequest(shiftSwapInstance);
 		/*
-		String swapping1 = shiftSwapInstance.getEmployeeEmail();
-		String swapping2 = shiftSwapInstance.getRecipientEmail();
-		String tempSwap = swapping1;
-		swapping1 = swapping2;
-		swapping2 = tempSwap;
-
-		String swappingDay1 = shiftSwapInstance.getSwapDay();
-		String swappingDay2 = shiftSwapInstance.getForDay();
-		String tempSwapDay = swappingDay1;
-		swappingDay1 = swappingDay2;
-		swappingDay2 = tempSwapDay;
-		
-
-		System.out.println("swapping1: " + swapping1);
-		System.out.println("swapping2: " + swapping2);
-
-		System.out.println("swapday1: " + swappingDay1);
-		System.out.println("swapday2: " + swappingDay2);
-		*/
+		 * String swapping1 = shiftSwapInstance.getEmployeeEmail(); String swapping2 =
+		 * shiftSwapInstance.getRecipientEmail(); String tempSwap = swapping1; swapping1
+		 * = swapping2; swapping2 = tempSwap;
+		 * 
+		 * String swappingDay1 = shiftSwapInstance.getSwapDay(); String swappingDay2 =
+		 * shiftSwapInstance.getForDay(); String tempSwapDay = swappingDay1;
+		 * swappingDay1 = swappingDay2; swappingDay2 = tempSwapDay;
+		 * 
+		 * 
+		 * System.out.println("swapping1: " + swapping1);
+		 * System.out.println("swapping2: " + swapping2);
+		 * 
+		 * System.out.println("swapday1: " + swappingDay1);
+		 * System.out.println("swapday2: " + swappingDay2);
+		 */
 
 		RosterModel person1 = this.rosterService.getEmployeeByemployeeEmail(shiftSwapInstance.getEmployeeEmail());
-		
+
 		RosterModel person2 = this.rosterService.getEmployeeByemployeeEmail(shiftSwapInstance.getRecipientEmail());
-		
+
 		System.out.println("person1: " + person1);
 		System.out.println("person2: " + person2);
 		System.out.println(shiftSwapInstance.getEmployeeEmail().toString());
 		System.out.println(shiftSwapInstance.getRecipientEmail().toString());
 		
+		
+		
+		//ALL 49 POSSIBLE DAY SWAP COMBINATIONS - RELEVANT SWITCHES ARE MADE HERE TO THE ROSTER
+		// Swapping employee's Monday with:
 		if (shiftSwapInstance.getSwapDay().toString().equals("Monday")) {
+			// Monday
 			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
-				System.out.println("SWAP COMPLETED");
+				System.out.println("SWAP MONDAY FOR MONDAY");
 				String tempHours = person1.getMonHours();
 				person1.setMonHours(person2.getMonHours());
 				person2.setMonHours(tempHours);
-			}
-			else if (person2.toString().equals("Tuesday")) {
+			} else if (shiftSwapInstance.getForDay().toString().equals("Tuesday")) {
+				System.out.println("SWAP MONDAY FOR TUESDAY");
+				String tempHours = person1.getMonHours();
 				person1.setMonHours(person2.getTuesHours());
+				person2.setTuesHours(tempHours);
+			} else if (shiftSwapInstance.getForDay().toString().equals("Wednesday")) {
+				System.out.println("SWAP MONDAY FOR WEDNESDAY");
+
+				String tempHours = person1.getMonHours();
+				person1.setMonHours(person2.getWedHours());
+				person2.setWedHours(tempHours);
+			} else if (shiftSwapInstance.getForDay().toString().equals("Thursday")) {
+				System.out.println("SWAP MONDAY FOR THURSDAY");
+
+				String tempHours = person1.getMonHours();
+				person1.setMonHours(person2.getThursHours());
+				person2.setThursHours(tempHours);
+			} else if (shiftSwapInstance.getForDay().toString().equals("Friday")) {
+				System.out.println("SWAP MONDAY FOR FRIDAY");
+
+				String tempHours = person1.getMonHours();
+				person1.setMonHours(person2.getFriHours());
+				person2.setFriHours(tempHours);
+			} else if (shiftSwapInstance.getForDay().toString().equals("Saturday")) {
+				System.out.println("SWAP MONDAY FOR SATURDAY");
+
+				String tempHours = person1.getMonHours();
+				person1.setMonHours(person2.getSatHours());
+				person2.setSatHours(tempHours);
+			} else if (shiftSwapInstance.getForDay().toString().equals("Sunday")) {
+				System.out.println("SWAP MONDAY FOR SUNDAY");
+
+				String tempHours = person1.getMonHours();
+				person1.setMonHours(person2.getSunHours());
+				person2.setSunHours(tempHours);
 			}
 
-		} else if (person1.toString().equals("Tuesday")) {
+		// Swapping employee's Tuesday with:
+		} else if (shiftSwapInstance.getSwapDay().toString().equals("Tuesday")) {
+			// Monday
+			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
+				System.out.println("SWAP TUESDAY FOR MONDAY");
+				String tempHours = person1.getTuesHours();
+				person1.setTuesHours(person2.getMonHours());
+				person2.setMonHours(tempHours);
+				// Tuesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Tuesday")) {
+				System.out.println("SWAP TUESDAY FOR TUESDAY");
+				String tempHours = person1.getTuesHours();
+				person1.setTuesHours(person2.getTuesHours());
+				person2.setTuesHours(tempHours);
+				// Wednesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Wednesday")) {
+				System.out.println("SWAP TUESDAY FOR WEDNESDAY");
 
-		} else if (person1.toString().equals("Wednesday")) {
+				String tempHours = person1.getTuesHours();
+				person1.setTuesHours(person2.getWedHours());
+				person2.setWedHours(tempHours);
+				// Thursday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Thursday")) {
+				System.out.println("SWAP TUESDAY FOR THURSDAY");
 
-		} else if (person1.toString().equals("Thursday")) {
+				String tempHours = person1.getTuesHours();
+				person1.setTuesHours(person2.getThursHours());
+				person2.setThursHours(tempHours);
+				// Friday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Friday")) {
+				System.out.println("SWAP TUESDAY FOR FRIDAY");
 
-		} else if (person1.toString().equals("Friday")) {
+				String tempHours = person1.getTuesHours();
+				person1.setTuesHours(person2.getFriHours());
+				person2.setFriHours(tempHours);
+				// Saturday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Saturday")) {
+				System.out.println("SWAP TUESDAY FOR SATURDAY");
 
-		} else if (person1.toString().equals("Saturday")) {
+				String tempHours = person1.getTuesHours();
+				person1.setTuesHours(person2.getSatHours());
+				person2.setSatHours(tempHours);
+				// Sunday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Sunday")) {
+				System.out.println("SWAP TUESDAY FOR SUNDAY");
 
-		} else if (person1.toString().equals("Sunday")) {
+				String tempHours = person1.getTuesHours();
+				person1.setTuesHours(person2.getSunHours());
+				person2.setSunHours(tempHours);
+			}
 
+		// Swapping employee's Wednesday with:
+		} else if (shiftSwapInstance.getSwapDay().toString().equals("Wednesday")) {
+			// Monday
+			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
+				System.out.println("SWAP WEDNESDAY FOR MONDAY");
+				String tempHours = person1.getWedHours();
+				person1.setWedHours(person2.getMonHours());
+				person2.setMonHours(tempHours);
+				// Tuesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Tuesday")) {
+				System.out.println("SWAP WEDNESDAY FOR TUESDAY");
+				String tempHours = person1.getWedHours();
+				person1.setWedHours(person2.getTuesHours());
+				person2.setTuesHours(tempHours);
+				// Wednesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Wednesday")) {
+				System.out.println("SWAP WEDNESDAY FOR WEDNESDAY");
+
+				String tempHours = person1.getWedHours();
+				person1.setWedHours(person2.getWedHours());
+				person2.setWedHours(tempHours);
+				// Thursday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Thursday")) {
+				System.out.println("SWAP WEDNESDAY FOR THURSDAY");
+
+				String tempHours = person1.getWedHours();
+				person1.setWedHours(person2.getThursHours());
+				person2.setThursHours(tempHours);
+				// Friday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Friday")) {
+				System.out.println("SWAP WEDNESDAY FOR FRIDAY");
+
+				String tempHours = person1.getWedHours();
+				person1.setWedHours(person2.getFriHours());
+				person2.setFriHours(tempHours);
+				// Saturday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Saturday")) {
+				System.out.println("SWAP WEDNESDAY FOR SATURDAY");
+
+				String tempHours = person1.getWedHours();
+				person1.setWedHours(person2.getSatHours());
+				person2.setSatHours(tempHours);
+				// Sunday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Sunday")) {
+				System.out.println("SWAP WEDNESDAY FOR SUNDAY");
+
+				String tempHours = person1.getWedHours();
+				person1.setWedHours(person2.getSunHours());
+				person2.setSunHours(tempHours);
+			}
+
+		// Swapping employee's Thursday with:
+		} else if (shiftSwapInstance.getSwapDay().toString().equals("Thursday")) {
+			// Monday
+			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
+				System.out.println("SWAP THURSDAY FOR MONDAY");
+				String tempHours = person1.getThursHours();
+				person1.setThursHours(person2.getMonHours());
+				person2.setMonHours(tempHours);
+				// Tuesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Tuesday")) {
+				System.out.println("SWAP THURSDAY FOR TUESDAY");
+				String tempHours = person1.getThursHours();
+				person1.setThursHours(person2.getTuesHours());
+				person2.setTuesHours(tempHours);
+				// Wednesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Wednesday")) {
+				System.out.println("SWAP THURSDAY FOR WEDNESDAY");
+
+				String tempHours = person1.getThursHours();
+				person1.setThursHours(person2.getWedHours());
+				person2.setWedHours(tempHours);
+				// Thursday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Thursday")) {
+				System.out.println("SWAP THURSDAY FOR THURSDAY");
+
+				String tempHours = person1.getThursHours();
+				person1.setThursHours(person2.getThursHours());
+				person2.setThursHours(tempHours);
+				// Friday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Friday")) {
+				System.out.println("SWAP THURSDAY FOR FRIDAY");
+
+				String tempHours = person1.getThursHours();
+				person1.setThursHours(person2.getFriHours());
+				person2.setFriHours(tempHours);
+				// Saturday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Saturday")) {
+				System.out.println("SWAP THURSDAY FOR SATURDAY");
+
+				String tempHours = person1.getThursHours();
+				person1.setThursHours(person2.getSatHours());
+				person2.setSatHours(tempHours);
+				// Sunday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Sunday")) {
+				System.out.println("SWAP THURSDAY FOR SUNDAY");
+
+				String tempHours = person1.getThursHours();
+				person1.setThursHours(person2.getSunHours());
+				person2.setSunHours(tempHours);
+			}
+
+			
+		// Swapping employee's Friday with:
+		} else if (shiftSwapInstance.getSwapDay().toString().equals("Friday")) {
+			// Monday
+			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
+				System.out.println("SWAP FRIDAY FOR MONDAY");
+				String tempHours = person1.getFriHours();
+				person1.setFriHours(person2.getMonHours());
+				person2.setMonHours(tempHours);
+				// Tuesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Tuesday")) {
+				System.out.println("SWAP FRIDAY FOR TUESDAY");
+				String tempHours = person1.getFriHours();
+				person1.setFriHours(person2.getTuesHours());
+				person2.setTuesHours(tempHours);
+				// Wednesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Wednesday")) {
+				System.out.println("SWAP FRIDAY FOR WEDNESDAY");
+
+				String tempHours = person1.getFriHours();
+				person1.setFriHours(person2.getWedHours());
+				person2.setWedHours(tempHours);
+				// Thursday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Thursday")) {
+				System.out.println("SWAP FRIDAY FOR THURSDAY");
+
+				String tempHours = person1.getFriHours();
+				person1.setFriHours(person2.getThursHours());
+				person2.setThursHours(tempHours);
+				// Friday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Friday")) {
+				System.out.println("SWAP FRIDAY FOR FRIDAY");
+
+				String tempHours = person1.getFriHours();
+				person1.setFriHours(person2.getFriHours());
+				person2.setFriHours(tempHours);
+				// Saturday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Saturday")) {
+				System.out.println("SWAP FRIDAY FOR SATURDAY");
+
+				String tempHours = person1.getFriHours();
+				person1.setFriHours(person2.getSatHours());
+				person2.setSatHours(tempHours);
+				// Sunday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Sunday")) {
+				System.out.println("SWAP FRIDAY FOR SUNDAY");
+
+				String tempHours = person1.getFriHours();
+				person1.setFriHours(person2.getSunHours());
+				person2.setSunHours(tempHours);
+			}
+
+		
+
+		// Swapping employee's Saturday with:
+		} else if (shiftSwapInstance.getSwapDay().toString().equals("Saturday")) {
+			// Monday
+			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
+				System.out.println("SWAP SATURDAY FOR MONDAY");
+				String tempHours = person1.getSatHours();
+				person1.setSatHours(person2.getMonHours());
+				person2.setMonHours(tempHours);
+				// Tuesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Tuesday")) {
+				System.out.println("SWAP SATURDAY FOR TUESDAY");
+				String tempHours = person1.getSatHours();
+				person1.setSatHours(person2.getTuesHours());
+				person2.setTuesHours(tempHours);
+				// Wednesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Wednesday")) {
+				System.out.println("SWAP SATURDAY FOR WEDNESDAY");
+
+				String tempHours = person1.getSatHours();
+				person1.setSatHours(person2.getWedHours());
+				person2.setWedHours(tempHours);
+				// Thursday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Thursday")) {
+				System.out.println("SWAP SATURDAY FOR THURSDAY");
+
+				String tempHours = person1.getSatHours();
+				person1.setSatHours(person2.getThursHours());
+				person2.setThursHours(tempHours);
+				// Friday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Friday")) {
+				System.out.println("SWAP SATURDAY FOR FRIDAY");
+
+				String tempHours = person1.getSatHours();
+				person1.setSatHours(person2.getFriHours());
+				person2.setFriHours(tempHours);
+				// Saturday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Saturday")) {
+				System.out.println("SWAP SATURDAY FOR SATURDAY");
+
+				String tempHours = person1.getSatHours();
+				person1.setSatHours(person2.getSatHours());
+				person2.setSatHours(tempHours);
+				// Sunday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Sunday")) {
+				System.out.println("SWAP SATURDAY FOR SUNDAY");
+
+				String tempHours = person1.getSatHours();
+				person1.setSatHours(person2.getSunHours());
+				person2.setSunHours(tempHours);
+			}
 		}
+		
+		// Swapping employee's Sunday with:
+		else if (shiftSwapInstance.getSwapDay().toString().equals("Sunday")) {
+			// Monday
+			if (shiftSwapInstance.getForDay().toString().equals("Monday")) {
+				System.out.println("SWAP SATURDAY FOR MONDAY");
+				String tempHours = person1.getSunHours();
+				person1.setSunHours(person2.getMonHours());
+				person2.setMonHours(tempHours);
+				// Tuesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Tuesday")) {
+				System.out.println("SWAP SATURDAY FOR TUESDAY");
+				String tempHours = person1.getSunHours();
+				person1.setSunHours(person2.getTuesHours());
+				person2.setTuesHours(tempHours);
+				// Wednesday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Wednesday")) {
+				System.out.println("SWAP SATURDAY FOR WEDNESDAY");
 
+				String tempHours = person1.getSunHours();
+				person1.setSunHours(person2.getWedHours());
+				person2.setWedHours(tempHours);
+				// Thursday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Thursday")) {
+				System.out.println("SWAP SATURDAY FOR THURSDAY");
+
+				String tempHours = person1.getSunHours();
+				person1.setSunHours(person2.getThursHours());
+				person2.setThursHours(tempHours);
+				// Friday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Friday")) {
+				System.out.println("SWAP SATURDAY FOR FRIDAY");
+
+				String tempHours = person1.getSunHours();
+				person1.setSunHours(person2.getFriHours());
+				person2.setFriHours(tempHours);
+				// Saturday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Saturday")) {
+				System.out.println("SWAP SATURDAY FOR SATURDAY");
+
+				String tempHours = person1.getSunHours();
+				person1.setSunHours(person2.getSatHours());
+				person2.setSatHours(tempHours);
+				// Sunday
+			} else if (shiftSwapInstance.getForDay().toString().equals("Sunday")) {
+				System.out.println("SWAP SATURDAY FOR SUNDAY");
+
+				String tempHours = person1.getSunHours();
+				person1.setSunHours(person2.getSunHours());
+				person2.setSunHours(tempHours);
+			}
+		}
+		
+		//Error handling
+		else {
+			System.out.println("Error occurred");
+			return "error";
+		}
+		
+		//END OF THE IF ELSE CONDITIONS FOR SHIFT SWAPPING.
+		
+
+		//Add the new objects to the model MVC.
 		model.addAttribute("person1", person1);
 		model.addAttribute("person2", person2);
+		//Delete the shift swap request as the swap has been made.
 		shiftSwapService.deleteShiftSwapRequestById(id);
 		return "employeeDashboard";
 	}
@@ -255,14 +611,35 @@ public class MainController {
 			}
 
 		}
+		
+		//Error handling: If user isn't found for some reason:
 		System.out.println("Error occurred");
 		return "error";
 
 	}
 
-	@GetMapping("/employee-dashboard/employee-request-holidays")
-	public String employeeRequestHolidays() {
-		return "employeeRequestHolidays";
+	@RequestMapping("/employee-dashboard/employee-request-holidays")
+	public String employeeRequestHolidays(Model model) {
+		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
+		model.addAttribute("roster", roster);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		for (int i = 0; i < roster.size(); i++) {
+			RosterModel roster2 = rosterService.getEmployeeByemployeeEmail(roster.get(i).getEmployeeEmail());
+			if (auth.getName().toString().equals(roster2.getEmployeeEmail())) {
+				double hoursAccrued = (roster.get(i).getEmployeeHours() * 0.04);
+				hoursAccrued = Math.round(hoursAccrued * 100); //Calculating the amount of holiday hours gained this week, rounding to 2 decimals
+				hoursAccrued = hoursAccrued / 100;
+				model.addAttribute("hoursAccrued", hoursAccrued);
+				return "employeeRequestHolidays";
+			}
+		}
+		
+		//Error handling: If user isn't found for some reason:
+		System.out.println("Error occurred");
+		return "error";
+		
 	}
 
 	@RequestMapping("/employee-dashboard/employee-view-weather")

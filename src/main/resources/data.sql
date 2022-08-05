@@ -69,7 +69,7 @@ insert into roster values (12, 'kmackellerb@stanford.edu', 'Keslie MacKeller', 1
 
 DROP TABLE if EXISTS shiftswaps;
 CREATE TABLE shiftswaps (requestid int PRIMARY KEY, employeeemail varchar(60), recipientemail varchar(60), swapday varchar(20), forday varchar(20), accepted boolean);
-insert into shiftswaps values (1, 'kmackellerb@stanford.edu', 'ncraigie0@ezinearticles.com', 'Tuesday', 'Wednesday', false);
+
 
 
 

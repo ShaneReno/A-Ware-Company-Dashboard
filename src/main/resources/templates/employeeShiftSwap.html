@@ -20,7 +20,9 @@
 
 			<div class="row justify-content-center" id="dashboardBody">
 				<div class="col-sm-12" id="rosterTable">
-					<h2 id = "signedInText"><span th:text="${#authentication.getPrincipal().getUsername()}"></span>,</h2>
+					<h1>All Shift Swap Requests</h1>
+					<hr>
+					<h2 id = "signedInText"><span th:text="${#authentication.getPrincipal().getUsername()}"></span></h2>
 					<h2>
 						<span th:text="${youHaveARequest}" > </span>
 					</h2>

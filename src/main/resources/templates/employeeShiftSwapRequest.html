@@ -26,7 +26,7 @@
 							<thead>
 								<tr>
 									<th class="customTH"><label>Your Email: </label></th>
-									<th class="customTH"><input type="text" th:value = "${#authentication.getPrincipal().getUsername()}" id = "employeeEmail" name = "employeeEmail" required='required'></th>
+									<th class="customTH"><input type="text" th:value = "${#authentication.getPrincipal().getUsername()}" id = "employeeEmail" name = "employeeEmail" required='required' readonly="readonly"></th>
 								</tr>
 								<tr>
 									<th class="customTH"><label>Enter Recipient Employee Email: </label></th>

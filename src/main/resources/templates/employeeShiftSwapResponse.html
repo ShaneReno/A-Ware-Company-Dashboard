@@ -22,10 +22,15 @@
 
 			<div class="row justify-content-center" id="dashboardBody">
 				<div class="col-sm-12" id="rosterTable">
-					<h2 id = "signedInText"><span th:text="${#authentication.getPrincipal().getUsername()}"></span>,</h2>
-					<h3>
-						Employee(s) <span id="employeeEmailSpan" th:text="${employeeEmails}" > </span> would like to swap:
-					</h3>
+					<h1>Your Shift Swap Requests</h1>
+					<hr>
+					<h2 id="signedInText">
+						<span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+					</h2>
+					<h2>
+						Employee(s) <span id="employeeEmailSpan"
+							th:text="${employeeEmails}"> </span> would like to swap:
+					</h2>
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -34,7 +39,7 @@
 								<th>Recipient Email</th>
 								<th>Swap Day</th>
 								<th>For Day</th>
-								<th>Accepted</th> 
+								<th>Accepted</th>
 							</tr>
 						</thead>
 						<tr th:each="shiftSwapInstance:${shiftSwapInstance}">
@@ -45,33 +50,31 @@
 							<td th:text="${shiftSwapInstance.forDay}"></td>
 							<td th:text="${shiftSwapInstance.accepted}"></td>
 							<td><a
-									th:href="@{/employee-dashboard/accept-shift-swap-request/{id}(id = ${shiftSwapInstance.requestId})}"
-									class="btn btn-primary">Accept</a>
-									 <!--
+								th:href="@{/employee-dashboard/accept-shift-swap-request/{id}(id = ${shiftSwapInstance.requestId})}"
+								class="btn btn-primary">Accept</a> <!--
 									<a
 									th:href="@{/employee-dashboard/deny-shift-swap-request/{id}(id = $shiftSwapModel.requestId})}"
 									class="btn btn-danger">Deny</a>
-									-->
-								</td>
+									--></td>
 						</tr>
 					</table>
 
 				</div>
 			</div>
-			</div>
-
-
-			<div class="row justify-content-center" id="footerSpace">
-				<div class="col-sm-4">
-					<a href="/employee-dashboard"><button type="button">Return
-							to Dashboard</button></a>
-				</div>
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4">
-					<a href="/logout"><button type="button">Logout</button></a>
-				</div>
-
-			</div>
 		</div>
+
+
+		<div class="row justify-content-center" id="footerSpace">
+			<div class="col-sm-4">
+				<a href="/employee-dashboard"><button type="button">Return
+						to Dashboard</button></a>
+			</div>
+			<div class="col-sm-4"></div>
+			<div class="col-sm-4">
+				<a href="/logout"><button type="button">Logout</button></a>
+			</div>
+
+		</div>
+	</div>
 	</div>
 </body>

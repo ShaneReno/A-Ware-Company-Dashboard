@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Request Holidays</title>
+<title>Holiday Hours Accrued</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -15,14 +15,28 @@
 	<div class="container-fluid" id="wholePage">
 		<div class="row justify-content-center">
 			<div align="center" class="col-sm-12" id="rosterHeader">
-				<h1>Request Holidays</h1>
+				<h1>Holiday Hours Accrued</h1>
 			</div>
-			<div class="row justify-content-center" id="headerSpace"></div>
+			<div class="row justify-content-center" id="rosterTable">
+				
+				<div align="center" class="col-sm-6" id="rosterTable">
+
+					<h2>
+						Holiday Hours Accrued For <span
+							th:text="${#authentication.getPrincipal().getUsername()}"></span>
+					</h2>
+					<hr>
+
+					<table class="table table-striped">
+						<tr>
+							<td>You have accrued:</td>
+							<td th:text="${hoursAccrued}"></td>
+						</tr>
+					</table>
+				</div>
 
 
-			<div class="row justify-content-center" id="dashboardBody"></div>
-
-			<div class="row justify-content-center" id="dashboardBody"></div>
+			</div>
 
 
 
