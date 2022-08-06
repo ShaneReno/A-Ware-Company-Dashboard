@@ -1,4 +1,4 @@
-
+//Employee model class for creating objects of employee
 package io.shane.models;
 
 import javax.persistence.Column;
@@ -6,13 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+//Map the attributes of the 'users' table in the 'data' schema data.sql file to the following variables
 @Entity
 @Table(name = "users", schema="data")
 public class EmployeeModel {
 	
 	//Mapping the table columns to variables
-	@Id
-	
+	@Id //Primary key - not generated
 	@Column(name = "username")
 	String username;
 	
@@ -21,6 +21,9 @@ public class EmployeeModel {
 	
 	@Column(name = "enabled")
 	boolean enabled;
+	
+	
+	//Getters and setters generated
 
 	public String getUsername() {
 		return username;
@@ -48,7 +51,7 @@ public class EmployeeModel {
 
 	
 	
-	
+	//Generated constructor using all parameters
 	public EmployeeModel(String username, String password, boolean enabled) {
 		super();
 		this.username = username;
@@ -63,6 +66,7 @@ public class EmployeeModel {
 
 	
 	
+	//to String method
 	@Override
 	public String toString() {
 		return "EmployeeModel [username=" + username + ", password=" + password + ", enabled=" + enabled + "]";

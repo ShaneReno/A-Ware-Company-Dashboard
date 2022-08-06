@@ -1,5 +1,10 @@
+//The main controller class that maps models to MVC and dynamic HTML interaction
+//@author Shane Reynolds
+
 package io.shane.awareproject;
 
+
+//All the library imports and dependencies for different functions.
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -36,9 +41,12 @@ import io.shane.services.RoleService;
 import io.shane.services.RosterService;
 import io.shane.services.ShiftSwapService;
 
+
+//Multi view controller for mapping different requests and passing models to seperate HTML files
 @Controller
 public class MainController {
 
+	//When the user logs in, depending on their role: direct them to the employee or admin dashboard 
 	@RequestMapping("/default")
 	public String defaultAfterLogin(HttpServletRequest request) {
 		if (request.isUserInRole("ROLE_ADMIN")) {
@@ -52,8 +60,8 @@ public class MainController {
 		return "index";
 	}
 
-	// Mapping for the employee user account
 
+	
 	@Autowired
 	RosterRepository rosterRepository;
 	@Autowired
@@ -75,48 +83,71 @@ public class MainController {
 	private ShiftSwapService shiftSwapService;
 	
 	
+	//Adding the favicon to the HTML tabs
 	@RequestMapping("favicon.ico")
     String favicon() {
     return "forward:/favicon.ico";
 }
-
+	
+	
+	
+	// Mapping for the employee user account
+	//Note: As a lot of the method bodies are repeated throughout the controller, some will be commented only once.
 	@RequestMapping("/employee-dashboard/employee-roster")
-	public String getAll(Model model) {
+	public String getAll(Model model) { //passing model into the method
+		//Initialise a list of object 'RosterModel' called roster, populate it with all the rostered employees in the roster service
 		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
+		//Add the list to the MVC as a model, with the attribute name 'roster' 
 		model.addAttribute("roster", roster);
+		//Return the string 'employeeRoster' - when this method is executed, the 'employeeRoster' HTML file is called and the user is directed there.
 		return "employeeRoster";
 	}
 
+	//GetMapping is similar to RequestMapping.
 	@GetMapping("/employee-dashboard")
 	public String employeeDashboard(Model model) {
+		//List of ShiftSwapModel objects - this is for when a shift swap request has been placed for this user, they will receive a red notification
 		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
+		//Get the currently signed in user name
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		//Boolean for the glowing of the shift swap button - a notification that will notify the user of an incoming request
 		boolean glowBool = false;
+		//Iterate through every element in the shiftSwap list and:
 		for (int i = 0; i < shiftSwap.size(); i++) {
+			//if the signed in user email equals the shift swap request recipient email - basically if the user has a pending request:
 			if (auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())) {
+				//boolean is true so the button glows red.
 				glowBool = true;
+				//Add this to the MVC. This will allow the HTML to access the boolean for dynamic changing of values
 				model.addAttribute("glowBool", glowBool);
 			}
 		}
+		//Direct to employee dashboard
 		return "employeeDashboard";
 	}
 
+	//Method for shift swap
 	@RequestMapping("/employee-dashboard/employee-request-shift-swap")
 	public String employeeRequestShiftSwap(Model model) {
 		List<ShiftSwapModel> shiftSwap = shiftSwapService.getAllShiftSwapRequests();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String youHaveARequest = "";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();//Same as previous method
+		String youHaveARequest = ""; //String for holding the 'you have a request' message on HTML screen
+		//Iterate through every element in the shiftSwap list and:
 		for (int i = 0; i < shiftSwap.size(); i++) {
+			//if the signed in user email equals the shift swap request recipient email - basically if the user has a pending request:
 			if (auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())) {
-				youHaveARequest = "You have a request to swap";
+				youHaveARequest = "You have a request to swap"; //Update the string with the message that will be sent to the MVC below
 				model.addAttribute("youHaveARequest", youHaveARequest);
 			}
 		}
+		//Add the shiftSwap list to the MVC. This will happen regardless if the user has a pending request or not. Can view all users requests.
 		model.addAttribute("shiftSwap", shiftSwap);
+		//Direct to this page.
 		return "employeeShiftSwap";
 	}
 
 	@RequestMapping("/employee-dashboard/employee-shift-swap-request")
+	//Same again for the request part of the shift swap method:
 	public String getShiftSwapRequest(Model model) {
 		ShiftSwapModel shiftSwapModel = new ShiftSwapModel();
 		model.addAttribute("shiftSwapModel", shiftSwapModel);
@@ -127,13 +158,15 @@ public class MainController {
 		return "employeeShiftSwapRequest";
 	}
 
+	//Postmapping takes what the input is from the HTML URL below and sends it to this method:
 	@PostMapping("/employee-dashboard/employee-shift-swap-request-sent")
 	public String saveShiftSwapRequest(@ModelAttribute("shiftSwapModel") ShiftSwapModel model) {
-		shiftSwapService.saveShiftSwapRequest(model);
-		return "redirect:/employee-dashboard";
+		shiftSwapService.saveShiftSwapRequest(model); //The model object that is passed through as a parameter is saved to the shiftSwap Table in the service
+		return "redirect:/employee-dashboard"; //redirect user to page
 	}
 
-	//List<ShiftSwapModel> shiftSwapInstance = new ArrayList<ShiftSwapModel>();
+
+	//Initialise the list of objects outside of the method so that when the method is called, it is not just resetting the list every time.
 	LinkedHashSet<ShiftSwapModel> shiftSwapInstance = new LinkedHashSet<ShiftSwapModel>();
 	@RequestMapping("/employee-dashboard/employee-shift-swap-response")
 	public String employeeRequestShiftSwapResponse(Model model) {
@@ -142,14 +175,18 @@ public class MainController {
 		List<ShiftSwapModel> shiftSwap = new ArrayList<ShiftSwapModel>(shiftSwap2);
 		
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String employeeEmails = "";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //get current user email
+		String employeeEmails = ""; 
 
+		//For the length of the list:
 		for (int i = 0; i < shiftSwap.size(); i++) {
+			//if the signed in user email equals the shift swap request recipient email - basically if the user has a pending request:
 			if (auth.getName().toString().equals(shiftSwap.get(i).getRecipientEmail())) {
+				//Get the object and add it to the new list. Send to MVC
 				shiftSwapInstance.add(shiftSwap.get(i));
 				model.addAttribute("shiftSwapInstance", shiftSwap);
 
+				//Add to the employeeEmails string everytime the current user has a request directed towards them. MVC add
 				employeeEmails += shiftSwap.get(i).getEmployeeEmail() + ", ";
 				model.addAttribute("employeeEmails", employeeEmails);
 			}
@@ -159,7 +196,7 @@ public class MainController {
 		//System.out.println("Total Shift Swap Requests: " + shiftSwap.size());
 		//System.out.println("Shift Swap for this user: " + shiftSwapInstance.size());
 
-		return "employeeShiftSwapResponse";
+		return "employeeShiftSwapResponse"; //Redirect
 	}
 	
 	
@@ -169,38 +206,15 @@ public class MainController {
 	public String accecptShiftSwapRequest(@PathVariable(value = "id") int id, Model model) {
 		// update method
 		ShiftSwapModel shiftSwapInstance = shiftSwapService.getShiftSwapRequestById(id);
-		shiftSwapInstance.setAccepted(true);
-		model.addAttribute("shiftSwapInstance", shiftSwapInstance);
-		System.out.println("Here1");
+		shiftSwapInstance.setAccepted(true); //Set the 'accepted boolean' of this object to true
+		model.addAttribute("shiftSwapInstance", shiftSwapInstance); //pass this model
 		// Swapping around the instance variables so that the shift swap can be
 		// reflected on the roster:
 		shiftSwapService.saveShiftSwapRequest(shiftSwapInstance);
-		/*
-		 * String swapping1 = shiftSwapInstance.getEmployeeEmail(); String swapping2 =
-		 * shiftSwapInstance.getRecipientEmail(); String tempSwap = swapping1; swapping1
-		 * = swapping2; swapping2 = tempSwap;
-		 * 
-		 * String swappingDay1 = shiftSwapInstance.getSwapDay(); String swappingDay2 =
-		 * shiftSwapInstance.getForDay(); String tempSwapDay = swappingDay1;
-		 * swappingDay1 = swappingDay2; swappingDay2 = tempSwapDay;
-		 * 
-		 * 
-		 * System.out.println("swapping1: " + swapping1);
-		 * System.out.println("swapping2: " + swapping2);
-		 * 
-		 * System.out.println("swapday1: " + swappingDay1);
-		 * System.out.println("swapday2: " + swappingDay2);
-		 */
 
+		//Define 2 new objects of RosterModel class, equalling to the current shift swap object's employee email and recipient email attributes.
 		RosterModel person1 = this.rosterService.getEmployeeByemployeeEmail(shiftSwapInstance.getEmployeeEmail());
-
 		RosterModel person2 = this.rosterService.getEmployeeByemployeeEmail(shiftSwapInstance.getRecipientEmail());
-
-		System.out.println("person1: " + person1);
-		System.out.println("person2: " + person2);
-		System.out.println(shiftSwapInstance.getEmployeeEmail().toString());
-		System.out.println(shiftSwapInstance.getRecipientEmail().toString());
-		
 		
 		
 		//ALL 49 POSSIBLE DAY SWAP COMBINATIONS - RELEVANT SWITCHES ARE MADE HERE TO THE ROSTER
@@ -574,33 +588,29 @@ public class MainController {
 		model.addAttribute("person2", person2);
 		//Delete the shift swap request as the swap has been made.
 		shiftSwapService.deleteShiftSwapRequestById(id);
-		return "employeeDashboard";
+		return "employeeDashboard"; //Direct back to the main employee dashboard HTML page.
 	}
 
-	/*
-	 * @PostMapping("/employee-dashboard/accept-shift-swap-request2/{id}") public
-	 * String saveAccecptShiftSwapRequest(@ModelAttribute("shiftSwapInstance")
-	 * ShiftSwapModel shiftSwapInstance) { shiftSwapInstance.setAccepted(true);
-	 * shiftSwapService.saveShiftSwapRequest(shiftSwapInstance);
-	 * System.out.println("Here2"); return "redirect:/employee-dashboard"; }
-	 */
 
+	//Method for calculating payslip
 	@GetMapping("/employee-dashboard/employee-view-payslip")
 	public String employeeViewPayslip(Model model) {
-		// RosterModel roster = rosterService.getEmployeeByemployeeId(id);
-		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
 
+		//list of all objects for roster
+		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
+		//MVC. Get current user email
 		model.addAttribute("roster", roster);
-		// double wages = (roster.getEmployeeHours() * 11.75);
-		// model.addAttribute("wages", wages);#
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+		//For the length of the roster list, execute:
 		for (int i = 0; i < roster.size(); i++) {
+			//define a new RosterModel called roster2, initialising it as the roster object's employee email at the ith element in the list
 			RosterModel roster2 = rosterService.getEmployeeByemployeeEmail(roster.get(i).getEmployeeEmail());
 			if (auth.getName().toString().equals(roster2.getEmployeeEmail())) {
+				//Send these attributes to the MVC
 				model.addAttribute("weekNo", roster.get(i).getWeekNo());
 				model.addAttribute("hours", roster.get(i).getEmployeeHours());
-				double grossWages = (roster.get(i).getEmployeeHours() * 11.75);
+				double grossWages = (roster.get(i).getEmployeeHours() * 11.75); //Calculating the wages
 				grossWages = Math.round(grossWages * 100); // Rounding to 2 decimals
 				grossWages = grossWages / 100;
 				model.addAttribute("grossWages", grossWages);
@@ -619,21 +629,25 @@ public class MainController {
 		return "error";
 
 	}
-
+	//Method for calculating employee holiday hours accrued
 	@RequestMapping("/employee-dashboard/employee-holidays")
 	public String employeeHolidays(Model model) {
+		
+		//List of objects, add to MVC and get current user email
 		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
 		model.addAttribute("roster", roster);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
+		//For length of roster list:
 		for (int i = 0; i < roster.size(); i++) {
+			//define a new RosterModel called roster2, initialising it as the roster object's employee email at the ith element in the list
 			RosterModel roster2 = rosterService.getEmployeeByemployeeEmail(roster.get(i).getEmployeeEmail());
 			if (auth.getName().toString().equals(roster2.getEmployeeEmail())) {
 				double hoursAccrued = (roster.get(i).getEmployeeHours() * 0.04);
 				hoursAccrued = Math.round(hoursAccrued * 100); //Calculating the amount of holiday hours gained this week, rounding to 2 decimals
 				hoursAccrued = hoursAccrued / 100;
-				model.addAttribute("hoursAccrued", hoursAccrued);
+				model.addAttribute("hoursAccrued", hoursAccrued); //Calculating finished and added to MVC
 				return "employeeHolidays";
 			}
 		}
@@ -644,29 +658,35 @@ public class MainController {
 		
 	}
 
+	//Method for viewing the weather live API - Note: only has up to 50 calls a day
 	@RequestMapping("/employee-dashboard/employee-view-weather")
 	public String employeeViewWeather(Model model) throws IOException, ParseException {
-		URL url;
+		URL url; //Define a URL using the imported library
 		try {
 			// Different API keys for when the calls have exceeded for the day - daily limit
 			// on free account
 			// url = new URL
 			// ("http://dataservice.accuweather.com/currentconditions/v1/207931?apikey=brnuJdH3fQ0kG6Vz6cfgshueYWOdeXnb&details=true");
+			
+			//API keys are unique to the person that set up the account on Accuweather.
 			url = new URL(
 					"http://dataservice.accuweather.com/currentconditions/v1/207931?apikey=KjwhD3BGkYQRYyKEp0j2Q3i3O4fHwg6o&details=true");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Define a new connection
 			connection.setRequestMethod("GET");
-			connection.connect();
+			connection.connect(); //Establish the connection using the aforementioned details
 			int responseCode = connection.getResponseCode();
 
+			//If the maximum calls for the day are reached - error handling 
 			if (responseCode != 200) {
 				return "error503";
 				// throw new RuntimeException("HTTP Response code: " + responseCode);
 
 			} else {
+				//If the API is within its limits for the day:
 				StringBuilder detailString = new StringBuilder();
 				Scanner scan = new Scanner(url.openStream());
 
+				//Open up a scanning stream and read every line
 				while (scan.hasNext()) {
 					detailString.append(scan.nextLine());
 
@@ -674,12 +694,13 @@ public class MainController {
 				scan.close();
 				// System.out.println(detailString);
 
+				//Parse the JSON into readable strings from objects
 				JSONParser parser = new JSONParser();
 				JSONArray dataObject = (JSONArray) parser.parse(String.valueOf(detailString));
 
 				// System.out.println(dataObject.get(0));
 
-				// Navigating through JSONs
+				// Navigating through JSONs. It is a tiered hierarchy of nested parameters.
 				JSONObject dataCountry = (JSONObject) dataObject.get(0);
 				JSONObject dataCountry2 = (JSONObject) dataCountry.get("Temperature");
 				JSONObject dataCountry3 = (JSONObject) dataCountry2.get("Metric");
@@ -705,43 +726,58 @@ public class MainController {
 					model.addAttribute("image", "/images/sun.png");
 				}
 			}
-		} catch (MalformedURLException e) {
+		} catch (MalformedURLException e) { //Any other URL errors:
 			e.printStackTrace();
 			System.out.println("ERROR");
 		}
 
-		return "employeeViewWeather";
+		return "employeeViewWeather"; //Go to the view weather page for employee account
 	}
 
+	
+	
+	
+	//end of employee mapping
+	//================================================
+	
+	
+	
+	
+	
 	// Mapping for the manager user account
 	@GetMapping("/admin-dashboard")
 	public String admin() {
 		return "adminDashboard";
 	}
 
+	//Adding an employee to the roster
 	@GetMapping("/admin-dashboard/admin-add-employee-to-roster")
 	public String createRoster(Model model) {
 		RosterModel roster = new RosterModel();
 
-		List<EmployeeModel> employeeList = employeeService.getAllEmployees();
+		List<EmployeeModel> employeeList = employeeService.getAllEmployees(); //List of objects of employees
 		System.out.println(employeeList);
+		//RosterModel and EmployeeModel are different: roster being the users that are scheduled to work, and employee being the hired employees records in general
 		model.addAttribute("roster", roster);
 		model.addAttribute("employeeList", employeeList);
-		return "adminAddEmployeeToRoster";
+		return "adminAddEmployeeToRoster"; //Go to page
 	}
 
+	//Post mapping accepting the model returned from HTML page via Thymeleaf and saving it to the roster table in the SQL database.
 	@PostMapping("/employee-dashboard/save-rostered-employee")
 	public String saveRosteredEmployee(@ModelAttribute("roster") RosterModel roster) {
 		rosterService.saveRosteredEmployee(roster);
-		return "redirect:/admin-dashboard";
+		return "redirect:/admin-dashboard"; //Go back to the dashboard
 	}
 
+	//Same as before except for a different page
 	@PostMapping("/employee-dashboard/save-rostered-employee-2")
 	public String saveRosteredEmployee2(@ModelAttribute("roster") RosterModel roster) {
 		rosterService.saveRosteredEmployee(roster);
 		return "redirect:/admin-dashboard/admin-view-create-roster";
 	}
 
+	//Creating a new employee account for a new hire to the company.
 	@GetMapping("/admin-dashboard/admin-add-new-employee-hire")
 	public String addHire(Model model) {
 		EmployeeModel employee = new EmployeeModel();
@@ -749,13 +785,14 @@ public class MainController {
 		return "adminAddNewEmployeeHire";
 	}
 
+	//Confirm the role of the new added user - if employee then ROLE_USER, if admin manager then ROLE_ADMIN
 	@GetMapping("/admin-dashboard/admin-add-new-employee-hire-confirm-role")
 	public String addRole(Model model) {
 		RoleModel role = new RoleModel();
 
 		model.addAttribute("role", role);
 
-		return "adminAddNewEmployeeHireConfirmRole";
+		return "adminAddNewEmployeeHireConfirmRole"; //Go to confirmation
 	}
 
 	// Setting the credentials of new registered employee
@@ -773,6 +810,7 @@ public class MainController {
 
 	}
 
+	
 	@GetMapping("/admin-dashboard/admin-view-create-roster")
 	public String createEditRoster(Model model) {
 		RosterModel roster = new RosterModel();
@@ -785,7 +823,7 @@ public class MainController {
 	@GetMapping("/employee-dashboard/save-create-edit-roster/{id}")
 	public String saveCreateEditRoster(@PathVariable(value = "id") int id, Model model) {
 		// update method
-		RosterModel roster = rosterService.getEmployeeByemployeeId(id);
+		RosterModel roster = rosterService.getEmployeeByemployeeId(id); //Update the employee in the roster with matching ID, with different details
 		model.addAttribute("roster", roster);
 		return "adminCreateEditRosterInfo";
 	}
@@ -793,7 +831,7 @@ public class MainController {
 	@GetMapping("/employee-dashboard/delete-rostered-employee/{id}")
 	public String deleteRosteredEmployee(@PathVariable(value = "id") int id) {
 		// delete method
-		this.rosterService.deleteRosteredEmployeeById(id);
+		this.rosterService.deleteRosteredEmployeeById(id); //Delete the record in roster with the returned ID
 		return "adminDashboard";
 	}
 
@@ -855,14 +893,7 @@ public class MainController {
 		return "redirect:/admin-dashboard/admin-fire-employee";
 	}
 
-	/*
-	 * @PostMapping("/saveCreateEditRoster") public String
-	 * saveCreateEditRoster(@ModelAttribute("roster") RosterModel roster) {
-	 * rosterService.saveRosteredEmployee(roster); return null;
-	 * 
-	 * }
-	 */
-
+	//To view all the employee records, the roster service, employee service and role service must all be called and utilised in harmony.
 	@GetMapping("/admin-dashboard/admin-view-employee-records")
 	public String viewAllEmployees(Model model) {
 		List<RosterModel> roster = rosterService.getAllRosteredEmployees();
@@ -873,7 +904,7 @@ public class MainController {
 
 		List<RoleModel> role = roleService.getAllRoles();
 		model.addAttribute("role", role);
-		return "adminViewEmployeeRecords";
+		return "adminViewEmployeeRecords"; //show this HTML page.
 	}
 
 }
