@@ -8,6 +8,8 @@ import io.shane.awareproject.RosterRepository;
 import io.shane.awareproject.RosterRepository2;
 import io.shane.models.RosterModel;
 
+//Service implementation for the RosterService class. This specifies the actual behaviours and various methods
+//Besides from just getters, setters, constructors and toString methods.
 @Service
 public class RosterServiceImpl implements RosterService {
 	
@@ -59,19 +61,11 @@ public class RosterServiceImpl implements RosterService {
 			roster = optional.get();
 		}
 		else {
-			throw new RuntimeException("Employee not found for email :: " + email);
+			throw new RuntimeException("Employee not found for email :: " + email); //Error handling
 		}
 		return roster;
 	
-	}
-	
-	/*
-	public RosterModel get(String employeeEmail) {
-		return rosterRepository.findByemployeeEmail(employeeEmail);
-	}
-	 */
-	
-	
+	}	
 	
 
 }

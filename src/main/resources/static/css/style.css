@@ -1,3 +1,9 @@
+/* Single CSS File for AWare system that is linked to all HTML files.
+@author Shane Reynolds
+*/
+
+
+/*All the following statements relate to the general attributes specified.*/
 html {
 	width: 100%;
 	height: 100%;
@@ -61,6 +67,9 @@ h3{
 }
 
 
+/*All the class statements for the HTML files. The HTML tags that feature these classes will host these features.
+Classes can be reused several times and are less unique than IDs.
+*/
 .customTH{
 	text-align: left;
 }
@@ -90,6 +99,9 @@ h3{
 }
 
 
+/*ID statements for all the HTML files. These are very specific statements that can only be used once for the associated HTML tags.
+As they cannot be reused, the names are specific to an element
+*/
 #employeeEmailSpan{
 	color: rgba(255,0,0,0.4);
 }

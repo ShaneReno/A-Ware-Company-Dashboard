@@ -8,18 +8,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+//Map the attributes of the 'roster' table in the 'data' schema data.sql file to the following variables
+//This model class will show the users of the system what hours they must work - an aid for the employee(user)
 @Entity
 @Table(name = "roster", schema="data")
 public class RosterModel {
 	
 	//Mapping the table columns to variables
 	
+	//Primary key is the employeeId. The initial RosterModel objects in the SQL database are 1 to 12.
+	//Any other created RosterModel objects are given generated primary key integer values that are incremental.
 	@GeneratedValue(generator = "merge_id_seq", strategy = GenerationType.AUTO)
 	@Column(name = "employeeid")
-	
 	@Id
 	int employeeId;
 	
+	//All the other strings and integers associated with the primary key of the roster
 	@Column(name = "employeeemail")
 	String employeeEmail;
 	
@@ -56,9 +61,8 @@ public class RosterModel {
 	@Column(name = "employeehours")
 	int employeeHours;
 	
+	
 	//Getters and setters for the roster
-	
-	
 	
 	public String getEmployeeEmail() {
 		return employeeEmail;
@@ -164,6 +168,8 @@ public class RosterModel {
 		this.employeeHours = employeeHours;
 	}
 
+	//Constructor generated with parameters - a lot of parameters for the RosterModel.
+	//This is because a lot of information has to be presented to the employee
 	public RosterModel(int employeeId, String employeeEmail, String employeeName, int weekNo, String monHours,
 			String tuesHours, String wedHours, String thursHours, String friHours, String satHours, String sunHours,
 			String employeeDept, int employeeHours) {
@@ -183,11 +189,13 @@ public class RosterModel {
 		this.employeeHours = employeeHours;
 	}
 
+	//Default constructor generated
 	public RosterModel() {
 	}
 	
 	
 
+	//Overriden to string method for viewing of the object. This prevents hash values from being displayed instead.
 	@Override
 	public String toString() {
 		return "RosterModel [employeeId=" + employeeId + ", employeeEmail=" + employeeEmail + ", employeeName="

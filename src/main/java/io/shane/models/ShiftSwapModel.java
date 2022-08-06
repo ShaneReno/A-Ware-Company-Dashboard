@@ -8,16 +8,20 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
+//Map the attributes of the 'shiftswaps' table in the 'data' schema data.sql file to the following variables
+//This model class will show the various shift swaps that are being requested and accepted.
 @Entity
 @Table(name = "shiftswaps", schema="data")
 public class ShiftSwapModel {
 	
-	//Mapping the table columns to variables
+	//Mapping the table columns to variables]
+	//Generate a unique primary key integer value that is incremental for each new request
 	@GeneratedValue(generator = "merge_id_seq2", strategy = GenerationType.AUTO)
 	@Id
 	@Column(name = "requestid")
 	int requestId;
 	
+	//The data types for the details are initialised for the shift swap requests 
 	@Column(name = "employeeemail")
 	String employeeEmail;
 	
@@ -33,6 +37,8 @@ public class ShiftSwapModel {
 	@Column(name = "accepted")
 	boolean accepted;
 
+	
+	//Getter and setter methods generated
 	public String getEmployeeEmail() {
 		return employeeEmail;
 	}
@@ -82,7 +88,7 @@ public class ShiftSwapModel {
 		this.requestId = requestId;
 	}
 
-	
+	//Constructor with parameters generated
 	public ShiftSwapModel(int requestId, String employeeEmail, String recipientEmail, String swapDay, String forDay,
 			boolean accepted) {
 		super();
@@ -100,7 +106,7 @@ public class ShiftSwapModel {
 
 	}
 
-	
+	//Overriden to string method to prevent the displaying of hash values.
 	@Override
 	public String toString() {
 		return "ShiftSwapModel [requestId=" + requestId + ", employeeEmail=" + employeeEmail + ", recipientEmail="
