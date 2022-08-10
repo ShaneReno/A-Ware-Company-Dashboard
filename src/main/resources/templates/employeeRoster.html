@@ -1,36 +1,69 @@
+<!--
+This is a HTML file that displays basic elements and provides structure.
+As there are 21 of these files, one will be commented. For the most part, the HTML
+Files are very similar.
+
+@author Shane Reynolds
+-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!-- Linking the HTML to the Thymeleaf template engine -->
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Allowing the total elements on screen to span the width of it -->
 <title>Employee Roster</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+<!-- Linking the project to bootstrap, which allows for a grid system of structuring elements neatly -->
 <link href="/css/style.css" rel="stylesheet">
+<!-- Linking the file to the custom made CSS file to add styling to the HTML files -->
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<!-- Linking the favicon ico file to the HTML. This is the small shortcut icon in the browser tab. -->
 </head>
+
 <body>
+	<!-- This is the main design area -->
 
 	<div class="container-fluid" id="wholePage">
+		<!--  Provides a full width container for entire width of viewport -->
 		<div class="row justify-content-center">
 			<div align="center" class="col-sm-12" id="rosterHeader">
+				<!--  a centered division that adapts the 'rosterHeader' CSS ID for styling
+																		The bootstrap attribute 'col-sm-12' means use the full width of the screen
+																		for this div. If it was 6, it would be half the screen of a small - sm - device -->
 				<h1>Employee Roster for Week</h1>
+				<!-- Main heading -->
 			</div>
-			
+
 			<div class="row justify-content-center" id="headerSpace">
+				<!--  new row after main heading -->
 				<div class="col-sm-12">
-				<span th:text="${#authentication.getPrincipal().getUsername()}"></span> 
-					<h2>Current Employee Roster for Week: <span th:text="${roster[0].weekNo}"></span></h2>
+					<!--  spanning fulll width -->
+					<span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+					<h2>
+						Current Employee Roster for Week: <span
+							th:text="${roster[0].weekNo}"></span>
+					</h2>
+					<!--  secondary heading with a thymeleaf template link
+																								This grabs the 'roster' model sent to the page, and displays the
+																								week number of the first user in the roster, displaying it on top of page. -->
 				</div>
 			</div>
-			
-			</div>
+
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12" id="rosterTable">
+					<!-- full width of screen, with the relevant CSS IDs -->
 					<table class="table table-striped">
+						<!-- New table -->
 						<thead>
+							<!--  new table head -->
 							<tr>
+								<!--  new table row -->
 								<th>Employee ID</th>
+								<!-- following meaningful headings -->
 								<th>Employee Email</th>
 								<th>Employee Name</th>
 								<th>Week Number</th>
@@ -46,7 +79,9 @@
 							</tr>
 						</thead>
 						<tr th:each="roster:${roster}">
+							<!--  using the roster model, pull the data from the roster table in the current database -->
 							<td th:text="${roster.employeeId}"></td>
+							<!-- display all these columns from the roster table. They are all different records. -->
 							<td th:text="${roster.employeeEmail}"></td>
 							<td th:text="${roster.employeeName}"></td>
 							<td th:text="${roster.weekNo}"></td>
@@ -60,10 +95,12 @@
 							<td th:text="${roster.employeeDept}"></td>
 							<td th:text="${roster.employeeHours}"></td>
 						</tr>
+						<!--  these will all iterate through each getter method for each different roster model defined in the table -->
 					</table>
 
 				</div>
 			</div>
+			<!-- A footer that is universal to every single page. Allows the user to return to the dashboard, providing a link to it dependant on the type of user logged in -->
 			<div class="row justify-content-center" id="footerSpace">
 				<div class="col-sm-4">
 					<a href="/employee-dashboard"><button type="button">Return
@@ -72,6 +109,7 @@
 				<div class="col-sm-4"></div>
 				<div class="col-sm-4">
 					<a href="/logout"><button type="button">Logout</button></a>
+					<!-- log out button -->
 				</div>
 
 			</div>
